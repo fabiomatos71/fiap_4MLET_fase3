@@ -1,0 +1,7 @@
+pandas==2.2.3
+numpy==2.1.0
+matplotlib==3.10.1
+scikit_learn==1.6.1
+seaborn==0.13.2
+tensorflow==2.19.0
+pomegranate==1.1.2
