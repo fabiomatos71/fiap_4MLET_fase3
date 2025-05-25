@@ -1,12 +1,11 @@
 
-## Sobre este Repositório
+## Tech Challenge Fase 3 - FIAP - 4MLET
 
-Este repositório foi criado como parte da entrega do **Trabalho de Conclusão da Fase 3** da **Pós-Graduação Machine Learning Engineering Pós Tech - 4MLET**, promovida pela **FIAP**.
+Este repositório foi criado como parte da entrega do **Tech Challenge da Fase 3** da **Pós-Graduação em Machine Learning Engineering - Pós Tech - 4MLET**, promovida pela **FIAP**.
 
-O projeto foi desenvolvido com base no **Tech Challenge**, atividade integradora que visa consolidar os conhecimentos adquiridos ao longo da formação, por meio da criação de uma solução completa de **Machine Learning Engineering**. O desafio propõe o desenvolvimento de um sistema que englobe a **coleta automatizada de dados**, o **armazenamento estruturado** dessas informações, a **modelagem preditiva**, o **versionamento e documentação do código** em repositório público e a apresentação de um **modelo funcional**, capaz de alimentar uma aplicação ou dashboard.
+O projeto foi desenvolvido com base no **Tech Challenge**, atividade integradora que visa consolidar os conhecimentos adquiridos ao longo da formação, por meio da criação de uma solução completa de **Machine Learning Engineering**. O desafio propõe o desenvolvimento de um sistema que englobe a **coleta e preparação de dados**, o **armazenamento estruturado** dessas informações, a **modelagem preditiva**, o **versionamento e documentação do código** em repositório público e a apresentação de um **modelo funcional**, capaz de alimentar uma aplicação ou dashboard.
 
 Neste contexto, foi concebida a implementação de uma solução para a **previsão de próximos casos de uso em sistemas corporativos**, explorando técnicas de aprendizado supervisionado e arquiteturas de redes neurais aplicadas ao processamento de sequências, com o objetivo de demonstrar a capacidade de integração entre engenharia de dados, modelagem estatística e entrega de valor através de produtos de machine learning.
-
 
 
 # Previsão de Próximos Casos de Uso no Sistema Corporativo
@@ -16,7 +15,7 @@ Este projeto tem como objetivo a construção de um modelo de Machine Learning c
 
 A motivação principal é **antecipar comportamentos**, permitindo otimizar processos, melhorar a experiência do usuário e fornecer subsídios para decisões estratégicas, como sugestões automatizadas ou alocação de recursos.
 
-O modelo foi treinado utilizando uma **Rede Neural** com arquitetura baseada em camadas **Dense** e função de ativação **Softmax**, após testes comparativos com arquiteturas de LSTM. O pipeline do projeto envolve desde a extração dos dados diretamente do banco do sistema até o deploy do modelo para utilização prática, que será demonstrada através de um **protótipo simulando o sistema corporativo chamando a API**, visto a impossibilidade de se abrir o sistema real neste trabalho.
+O modelo foi treinado utilizando uma **Rede Neural** com arquitetura baseada em camadas **Dense** e função de ativação **Softmax**, após testes comparativos com arquiteturas de LSTM. O pipeline do projeto envolve desde a extração dos dados diretamente do banco do sistema até o deploy do modelo para utilização prática, que será demonstrada através de um **protótipo simulando o sistema corporativo chamando a API**, visto a impossibilidade de se abrir o sistema real neste trabalho.  Para efeito de comparação, foi mantida a opção de se utilizar tanto o treinamento como a utilização do protótipo baseado no treinamento com LSTM.
 
 ## Arquitetura do Projeto
 O projeto foi estruturado em um pipeline de **cinco etapas principais**, integrando as diversas fases do desenvolvimento de soluções baseadas em Machine Learning:
@@ -75,6 +74,26 @@ Após testes, a arquitetura baseada em **camadas Dense com função de ativaçã
 - **Divisão dos dados:** treino, validação e teste.
 - **Hiperparâmetros:** épocas, batch size, função de perda categórica, otimização com Adam.
 - **Métricas:** Acurácia e Top-K Accuracy.
+
+## Considerações sobre a Comparação entre LSTM e Dense
+Durante o processo de modelagem, realizamos **testes comparativos** entre arquiteturas baseadas em **LSTM (Long Short-Term Memory)** e uma rede **Dense Layers com função de ativação Softmax**. Embora o LSTM seja uma escolha clássica para problemas envolvendo **sequências temporais**, neste contexto específico ele apresentou desempenho inferior. As principais razões identificadas para esse resultado foram:
+
+### 1. Tamanho e complexidade das sequências
+- O histórico de interações analisado continha **sequências relativamente curtas (2 casos de uso como histórico para cada previsão)** e com **pouca variabilidade temporal** complexa, características para as quais a arquitetura LSTM pode ser **subaproveitada**.
+- Modelos LSTM são mais vantajosos em **contextos onde existe dependência de longo prazo** ou **padrões temporais complexos**, o que não se evidenciou neste dataset.
+
+### 2. Overfitting
+- Devido à sua **maior complexidade** e ao número superior de parâmetros, a LSTM demonstrou uma **tendência maior ao overfitting**, principalmente dado o tamanho limitado do conjunto de dados disponível.
+- Mesmo com regularização, como dropout e ajustes nos hiperparâmetros, o modelo LSTM apresentou **piora na generalização**. 
+
+### 3. Eficiência e Simplicidade
+- A arquitetura com **camadas Dense** foi capaz de capturar os **padrões relevantes** das sequências de uso de forma mais **eficiente e simples**.
+- Além disso, apresentou uma **inferência mais rápida** e com **menor custo computacional**, o que é altamente relevante para aplicações práticas que exigem **baixa latência**.
+
+### 4. Natureza do problema
+- O problema de previsão do **próximo caso de uso** se comportou de maneira mais próxima de uma **classificação categórica sobre um espaço de estados discretos**, onde modelos como Dense se adequam muito bem, sem a necessidade de um mecanismo explícito de memória de longo prazo como o fornecido pelo LSTM.
+
+
 
 O modelo demonstrou **bom desempenho** na tarefa de prever o próximo caso de uso.
 
