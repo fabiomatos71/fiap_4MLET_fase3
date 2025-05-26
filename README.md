@@ -167,8 +167,11 @@ O projeto está organizado da seguinte forma para garantir clareza, modularidade
 │   └── settings.json             
 ├── README.md                     # Documentação principal do projeto
 ├── dados/                        # Dados brutos e processados
-│   └── processados/              # Dados já tratados para uso
-│       └── Dados_TechChallenge_Fase3.csv   # Base de dados principal processada
+│   ├── brutos/                   # Dados brutos do sistema
+│   │   ├── Dados_TechChallenge_Fase3_bruto.csv # Dados brutos retirados do sistema
+│   │   └── ObterLogsSistema.cs   # Código c# que le os logs do sistema e gera dados brutos (já anonimizados)
+│   └── processados/              # Dados já tratados para aprendizagem dos modelos
+│       └── Dados_TechChallenge_Fase3.csv   # Base de dados principal sobre a qual são geradas as sequencias temporais de casos de uso
 ├── fase3_fiap_4mlet/             # Pacote principal do projeto (código fonte)
 │   ├── __init__.py               
 │   ├── __pycache__/              # Cache de bytecode Python
