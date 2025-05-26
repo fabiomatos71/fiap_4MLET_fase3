@@ -1,5 +1,5 @@
 import os
-from ..modelo_para_uso import ModeloParaUso
+from modelo_para_uso import ModeloParaUso
 
 def realizar_previsao(dado_previsao):
     resultados = modelo.realizar_previsao(casoDeUso_1=dado_previsao["caso_de_uso_1"], casoDeUso_2=dado_previsao["caso_de_uso_2"], periodo_mes=dado_previsao["periodo_mes"], top_n=5)
