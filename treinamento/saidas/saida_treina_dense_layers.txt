@@ -1,0 +1,499 @@
+Iniciando pipeline de Machine Learning - modelo Dense Layers 
+============================================================
+
+Rodando em /home/fabiomatos/f/TechChallenge_Fase3.
+
+=== INICIANDO PREPROCESSAMENTO ===
+Carregando dados de: /home/fabiomatos/f/TechChallenge_Fase3/dados/processados/Dados_TechChallenge_Fase3.csv
+Dataset carregado: (115591, 7)
+
+Distribuição das classes:
+casoDeUso
+uc0043    13099
+uc0232     7408
+uc0096     7042
+uc0146     5042
+uc0075     3394
+uc0222     3085
+uc0162     3018
+uc0111     2963
+uc0179     2896
+uc0069     2620
+Name: count, dtype: int64
+Processando dados para usuário: *
+Processando todos os usuários (excluindo 1 usuários): 115465 registros
+Criando features históricas...
+Registros após limpeza: 115465
+Aplicando One-Hot Encoding em: ['casoDeUso_1', 'casoDeUso_2']
+Processando features contextuais...
+Aplicando One-Hot Encoding em: ['casoDeUso']
+Normalizando features sequenciais...
+Dividindo dados em treino e teste...
+⚠️ Aviso: 10 classes com apenas 1 amostra:
+casoDeUso
+uc0185    1
+uc0152    1
+uc2099    1
+uc2047    1
+uc0207    1
+Name: count, dtype: int64
+Removendo classes com poucas amostras para permitir estratificação...
+Dados após filtro: 115455 amostras, 292 classes
+Aplicando One-Hot Encoding em: ['casoDeUso']
+✅ Divisão estratificada realizada com sucesso
+Treino: 69273 samples
+Teste: 46182 samples
+=== CRIANDO MODELO DENSE HÍBRIDO ===
+I0000 00:00:1748229665.522668  270430 gpu_device.cc:2019] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 5520 MB memory:  -> device: 0, name: NVIDIA GeForce RTX 4070 Laptop GPU, pci bus id: 0000:01:00.0, compute capability: 8.9
+Usando Dense layers: [128, 64]
+Modelo criado e compilado!
+Parâmetros totais: 104,840
+
+
+=== ARQUITETURA DO MODELO ===
+Model: "functional"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Layer (type)                  ┃ Output Shape              ┃         Param # ┃ Connected to               ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ input_sequence (InputLayer)   │ (None, 603)               │               0 │ -                          │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ dense_1 (Dense)               │ (None, 128)               │          77,312 │ input_sequence[0][0]       │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ dropout_1 (Dropout)           │ (None, 128)               │               0 │ dense_1[0][0]              │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ dense_2 (Dense)               │ (None, 64)                │           8,256 │ dropout_1[0][0]            │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ dropout_2 (Dropout)           │ (None, 64)                │               0 │ dense_2[0][0]              │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ input_epoch (InputLayer)      │ (None, 1)                 │               0 │ -                          │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ concatenate (Concatenate)     │ (None, 65)                │               0 │ dropout_2[0][0],           │
+│                               │                           │                 │ input_epoch[0][0]          │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ output (Dense)                │ (None, 292)               │          19,272 │ concatenate[0][0]          │
+└───────────────────────────────┴───────────────────────────┴─────────────────┴────────────────────────────┘
+ Total params: 104,840 (409.53 KB)
+ Trainable params: 104,840 (409.53 KB)
+ Non-trainable params: 0 (0.00 B)
+=== INICIANDO TREINAMENTO ===
+Epoch 1/50
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1748229666.974561  270614 service.cc:152] XLA service 0x7fd460018120 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+I0000 00:00:1748229666.974621  270614 service.cc:160]   StreamExecutor device (0): NVIDIA GeForce RTX 4070 Laptop GPU, Compute Capability 8.9
+2025-05-26 00:21:07.000713: I tensorflow/compiler/mlir/tensorflow/utils/dump_mlir_util.cc:269] disabling MLIR crash reproducer, set env var `MLIR_CRASH_REPRODUCER_DIRECTORY` to enable.
+I0000 00:00:1748229667.101251  270614 cuda_dnn.cc:529] Loaded cuDNN version 90501
+2025-05-26 00:21:08.426171: I external/local_xla/xla/stream_executor/cuda/subprocess_compilation.cc:346] ptxas warning : Registers are spilled to local memory in function 'gemm_fusion_dot_1111', 720 bytes spill stores, 620 bytes spill loads
+
+I0000 00:00:1748229669.285000  270614 device_compiler.h:188] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+1719/1732 ━━━━━━━━━━━━━━━━━━━━ 0s 2ms/step - accuracy: 0.1626 - loss: 4.19702025-05-26 00:21:13.852380: I external/local_xla/xla/stream_executor/cuda/subprocess_compilation.cc:346] ptxas warning : Registers are spilled to local memory in function 'gemm_fusion_dot_1111_0', 4 bytes spill stores, 4 bytes spill loads
+
+2025-05-26 00:21:14.009522: I external/local_xla/xla/stream_executor/cuda/subprocess_compilation.cc:346] ptxas warning : Registers are spilled to local memory in function 'gemm_fusion_dot_1111', 696 bytes spill stores, 604 bytes spill loads
+
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 0s 3ms/step - accuracy: 0.1629 - loss: 4.19422025-05-26 00:21:15.576135: I external/local_xla/xla/stream_executor/cuda/subprocess_compilation.cc:346] ptxas warning : Registers are spilled to local memory in function 'gemm_fusion_dot_63', 12 bytes spill stores, 12 bytes spill loads
+
+2025-05-26 00:21:15.590540: I external/local_xla/xla/stream_executor/cuda/subprocess_compilation.cc:346] ptxas warning : Registers are spilled to local memory in function 'gemm_fusion_dot_63', 4 bytes spill stores, 4 bytes spill loads
+
+2025-05-26 00:21:17.162052: I external/local_xla/xla/stream_executor/cuda/subprocess_compilation.cc:346] ptxas warning : Registers are spilled to local memory in function 'gemm_fusion_dot_63', 12 bytes spill stores, 12 bytes spill loads
+
+2025-05-26 00:21:17.197310: I external/local_xla/xla/stream_executor/cuda/subprocess_compilation.cc:346] ptxas warning : Registers are spilled to local memory in function 'gemm_fusion_dot_63', 4 bytes spill stores, 4 bytes spill loads
+
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 11s 5ms/step - accuracy: 0.1629 - loss: 4.1940 - val_accuracy: 0.2725 - val_loss: 3.3407 - learning_rate: 0.0010
+Epoch 2/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 5s 3ms/step - accuracy: 0.2461 - loss: 3.4299 - val_accuracy: 0.2786 - val_loss: 3.2331 - learning_rate: 0.0010
+Epoch 3/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 5s 3ms/step - accuracy: 0.2552 - loss: 3.3172 - val_accuracy: 0.2840 - val_loss: 3.1966 - learning_rate: 0.0010
+Epoch 4/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 5s 3ms/step - accuracy: 0.2576 - loss: 3.2682 - val_accuracy: 0.2851 - val_loss: 3.1784 - learning_rate: 0.0010
+Epoch 5/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 5s 3ms/step - accuracy: 0.2599 - loss: 3.2397 - val_accuracy: 0.2860 - val_loss: 3.1643 - learning_rate: 0.0010
+Epoch 6/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 5s 3ms/step - accuracy: 0.2667 - loss: 3.2052 - val_accuracy: 0.2838 - val_loss: 3.1689 - learning_rate: 0.0010
+Epoch 7/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 5s 3ms/step - accuracy: 0.2655 - loss: 3.2069 - val_accuracy: 0.2875 - val_loss: 3.1539 - learning_rate: 0.0010
+Epoch 8/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 5s 3ms/step - accuracy: 0.2651 - loss: 3.1796 - val_accuracy: 0.2867 - val_loss: 3.1581 - learning_rate: 0.0010
+Epoch 9/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 5s 3ms/step - accuracy: 0.2697 - loss: 3.1689 - val_accuracy: 0.2864 - val_loss: 3.1628 - learning_rate: 0.0010
+Epoch 10/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 6s 3ms/step - accuracy: 0.2701 - loss: 3.1520 - val_accuracy: 0.2897 - val_loss: 3.1697 - learning_rate: 0.0010
+Epoch 11/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 6s 3ms/step - accuracy: 0.2663 - loss: 3.1538 - val_accuracy: 0.2869 - val_loss: 3.1779 - learning_rate: 0.0010
+Epoch 12/50
+1727/1732 ━━━━━━━━━━━━━━━━━━━━ 0s 3ms/step - accuracy: 0.2712 - loss: 3.1412  
+Epoch 12: ReduceLROnPlateau reducing learning rate to 0.0005000000237487257.
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 6s 3ms/step - accuracy: 0.2712 - loss: 3.1413 - val_accuracy: 0.2878 - val_loss: 3.1719 - learning_rate: 0.0010
+Epoch 13/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 6s 3ms/step - accuracy: 0.2723 - loss: 3.0986 - val_accuracy: 0.2922 - val_loss: 3.1514 - learning_rate: 5.0000e-04
+Epoch 14/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 6s 3ms/step - accuracy: 0.2763 - loss: 3.0803 - val_accuracy: 0.2920 - val_loss: 3.1530 - learning_rate: 5.0000e-04
+Epoch 15/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 5s 3ms/step - accuracy: 0.2748 - loss: 3.0838 - val_accuracy: 0.2908 - val_loss: 3.1578 - learning_rate: 5.0000e-04
+Epoch 16/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 11s 3ms/step - accuracy: 0.2769 - loss: 3.0722 - val_accuracy: 0.2902 - val_loss: 3.1533 - learning_rate: 5.0000e-04
+Epoch 17/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 6s 4ms/step - accuracy: 0.2777 - loss: 3.0628 - val_accuracy: 0.2927 - val_loss: 3.1577 - learning_rate: 5.0000e-04
+Epoch 18/50
+1727/1732 ━━━━━━━━━━━━━━━━━━━━ 0s 3ms/step - accuracy: 0.2833 - loss: 3.0604  
+Epoch 18: ReduceLROnPlateau reducing learning rate to 0.0002500000118743628.
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 6s 3ms/step - accuracy: 0.2833 - loss: 3.0604 - val_accuracy: 0.2923 - val_loss: 3.1576 - learning_rate: 5.0000e-04
+Epoch 19/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 5s 3ms/step - accuracy: 0.2800 - loss: 3.0487 - val_accuracy: 0.2942 - val_loss: 3.1509 - learning_rate: 2.5000e-04
+Epoch 20/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 5s 3ms/step - accuracy: 0.2801 - loss: 3.0498 - val_accuracy: 0.2923 - val_loss: 3.1558 - learning_rate: 2.5000e-04
+Epoch 21/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 5s 3ms/step - accuracy: 0.2821 - loss: 3.0257 - val_accuracy: 0.2924 - val_loss: 3.1550 - learning_rate: 2.5000e-04
+Epoch 22/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 5s 3ms/step - accuracy: 0.2844 - loss: 3.0263 - val_accuracy: 0.2932 - val_loss: 3.1546 - learning_rate: 2.5000e-04
+Epoch 23/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 5s 3ms/step - accuracy: 0.2877 - loss: 3.0125 - val_accuracy: 0.2933 - val_loss: 3.1526 - learning_rate: 2.5000e-04
+Epoch 24/50
+1715/1732 ━━━━━━━━━━━━━━━━━━━━ 0s 3ms/step - accuracy: 0.2830 - loss: 3.0129  
+Epoch 24: ReduceLROnPlateau reducing learning rate to 0.0001250000059371814.
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 5s 3ms/step - accuracy: 0.2830 - loss: 3.0130 - val_accuracy: 0.2924 - val_loss: 3.1544 - learning_rate: 2.5000e-04
+Epoch 25/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 5s 3ms/step - accuracy: 0.2864 - loss: 3.0038 - val_accuracy: 0.2927 - val_loss: 3.1565 - learning_rate: 1.2500e-04
+Epoch 26/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 5s 3ms/step - accuracy: 0.2806 - loss: 3.0136 - val_accuracy: 0.2934 - val_loss: 3.1589 - learning_rate: 1.2500e-04
+Epoch 27/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 5s 3ms/step - accuracy: 0.2835 - loss: 2.9965 - val_accuracy: 0.2947 - val_loss: 3.1556 - learning_rate: 1.2500e-04
+Epoch 28/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 6s 4ms/step - accuracy: 0.2846 - loss: 3.0043 - val_accuracy: 0.2949 - val_loss: 3.1563 - learning_rate: 1.2500e-04
+Epoch 29/50
+1723/1732 ━━━━━━━━━━━━━━━━━━━━ 0s 3ms/step - accuracy: 0.2871 - loss: 3.0003  
+Epoch 29: ReduceLROnPlateau reducing learning rate to 6.25000029685907e-05.
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 5s 3ms/step - accuracy: 0.2871 - loss: 3.0003 - val_accuracy: 0.2948 - val_loss: 3.1566 - learning_rate: 1.2500e-04
+Epoch 30/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 5s 3ms/step - accuracy: 0.2865 - loss: 3.0005 - val_accuracy: 0.2943 - val_loss: 3.1568 - learning_rate: 6.2500e-05
+Epoch 31/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 5s 3ms/step - accuracy: 0.2887 - loss: 2.9929 - val_accuracy: 0.2942 - val_loss: 3.1564 - learning_rate: 6.2500e-05
+Epoch 32/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 5s 3ms/step - accuracy: 0.2876 - loss: 2.9941 - val_accuracy: 0.2947 - val_loss: 3.1572 - learning_rate: 6.2500e-05
+Epoch 33/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 5s 3ms/step - accuracy: 0.2875 - loss: 2.9966 - val_accuracy: 0.2936 - val_loss: 3.1569 - learning_rate: 6.2500e-05
+Epoch 34/50
+1731/1732 ━━━━━━━━━━━━━━━━━━━━ 0s 2ms/step - accuracy: 0.2905 - loss: 2.9787  
+Epoch 34: ReduceLROnPlateau reducing learning rate to 3.125000148429535e-05.
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 5s 3ms/step - accuracy: 0.2905 - loss: 2.9787 - val_accuracy: 0.2935 - val_loss: 3.1548 - learning_rate: 6.2500e-05
+Epoch 35/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 5s 3ms/step - accuracy: 0.2886 - loss: 2.9821 - val_accuracy: 0.2935 - val_loss: 3.1553 - learning_rate: 3.1250e-05
+Epoch 36/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 5s 3ms/step - accuracy: 0.2871 - loss: 2.9948 - val_accuracy: 0.2935 - val_loss: 3.1562 - learning_rate: 3.1250e-05
+Epoch 37/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 5s 3ms/step - accuracy: 0.2885 - loss: 2.9965 - val_accuracy: 0.2938 - val_loss: 3.1569 - learning_rate: 3.1250e-05
+Epoch 38/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 5s 3ms/step - accuracy: 0.2892 - loss: 2.9821 - val_accuracy: 0.2933 - val_loss: 3.1566 - learning_rate: 3.1250e-05
+Epoch 38: early stopping
+Restoring model weights from the end of the best epoch: 28.
+Treinamento concluído!
+=== AVALIANDO MODELO ===
+1444/1444 ━━━━━━━━━━━━━━━━━━━━ 3s 2ms/step    
+Acurácia: 28.63%
+
+=== RELATÓRIO DE CLASSIFICAÇÃO ===
+              precision    recall  f1-score   support
+
+      uc0001       0.00      0.00      0.00         1
+      uc0003       0.00      0.00      0.00        12
+      uc0004       0.06      0.02      0.03        44
+      uc0006       0.00      0.00      0.00         2
+      uc0012       1.00      0.04      0.08        51
+      uc0013       0.00      0.00      0.00        42
+      uc0014       0.00      0.00      0.00         5
+      uc0015       0.67      0.17      0.27        24
+      uc0016       0.16      0.09      0.12      1016
+      uc0017       0.13      0.05      0.07       247
+     uc0018b       0.43      0.03      0.05       105
+      uc0019       0.12      0.00      0.00       812
+      uc0020       0.00      0.00      0.00         8
+      uc0021       0.00      0.00      0.00         3
+      uc0022       0.00      0.00      0.00         1
+      uc0023       0.82      1.00      0.90        55
+      uc0024       0.33      0.32      0.33       674
+      uc0025       0.00      0.00      0.00         9
+   uc0025_01       0.00      0.00      0.00        68
+      uc0026       0.00      0.00      0.00        27
+      uc0027       0.28      0.27      0.27        26
+      uc0028       0.00      0.00      0.00       109
+      uc0029       0.47      0.66      0.55       205
+      uc0030       0.49      0.60      0.54       252
+      uc0031       0.37      0.18      0.24       574
+      uc0032       0.32      0.15      0.21        46
+      uc0033       0.19      0.08      0.11        63
+      uc0034       0.47      0.06      0.11       115
+      uc0035       0.00      0.00      0.00        13
+      uc0036       0.00      0.00      0.00        26
+      uc0037       1.00      0.20      0.33         5
+      uc0039       0.25      0.45      0.32        99
+      uc0040       0.42      0.38      0.40       136
+      uc0041       0.00      0.00      0.00        23
+      uc0042       0.47      0.48      0.48       156
+      uc0043       0.21      0.72      0.33      5240
+      uc0044       0.37      0.30      0.33       741
+      uc0045       0.38      0.11      0.17       319
+      uc0046       0.00      0.00      0.00         1
+      uc0047       0.22      0.02      0.04       164
+      uc0049       0.39      0.23      0.29        31
+      uc0050       0.50      0.12      0.20         8
+      uc0052       0.00      0.00      0.00        46
+      uc0053       0.35      0.17      0.23       426
+      uc0054       0.00      0.00      0.00         6
+      uc0056       0.00      0.00      0.00        73
+      uc0057       0.00      0.00      0.00         1
+      uc0058       0.18      0.03      0.06       176
+      uc0059       0.25      0.18      0.21       116
+      uc0060       0.46      0.25      0.32       177
+      uc0061       0.00      0.00      0.00        26
+      uc0062       0.00      0.00      0.00        17
+      uc0064       0.00      0.00      0.00         2
+      uc0065       0.00      0.00      0.00         8
+      uc0067       0.00      0.00      0.00        15
+      uc0068       0.00      0.00      0.00       102
+      uc0069       0.30      0.46      0.36      1048
+      uc0070       0.00      0.00      0.00         7
+      uc0072       0.00      0.00      0.00         2
+      uc0075       0.37      0.59      0.46      1357
+      uc0076       0.20      0.03      0.04       200
+      uc0077       0.45      0.23      0.31       681
+      uc0078       0.46      0.11      0.17        57
+      uc0079       0.13      0.02      0.03       130
+      uc0080       0.00      0.00      0.00        25
+      uc0081       0.00      0.00      0.00        98
+      uc0082       0.00      0.00      0.00         1
+      uc0084       0.00      0.00      0.00         9
+      uc0085       0.20      0.06      0.10        32
+      uc0086       0.31      0.33      0.32       196
+      uc0087       0.21      0.09      0.13       334
+      uc0089       1.00      0.02      0.05        43
+      uc0090       0.00      0.00      0.00        64
+      uc0091       0.32      0.29      0.30        70
+      uc0092       0.00      0.00      0.00         2
+      uc0093       0.24      0.22      0.23        49
+      uc0094       0.32      0.01      0.02       785
+      uc0096       0.28      0.45      0.34      2817
+      uc0097       0.33      0.12      0.18        92
+      uc0098       0.68      0.49      0.57       115
+      uc0099       0.00      0.00      0.00         8
+      uc0100       0.27      0.05      0.08        66
+      uc0101       0.00      0.00      0.00         7
+      uc0102       0.00      0.00      0.00        21
+      uc0103       0.00      0.00      0.00        11
+      uc0105       0.00      0.00      0.00        22
+      uc0107       0.39      0.61      0.48       330
+      uc0108       0.69      0.56      0.62        52
+      uc0109       0.00      0.00      0.00        58
+      uc0110       0.58      0.17      0.27        63
+      uc0111       0.13      0.01      0.03      1185
+      uc0112       0.00      0.00      0.00        57
+      uc0113       0.00      0.00      0.00        70
+      uc0114       0.00      0.00      0.00       284
+      uc0115       0.17      0.04      0.06        79
+      uc0116       0.17      0.16      0.17        31
+      uc0117       0.45      0.54      0.49        26
+      uc0118       0.00      0.00      0.00        71
+      uc0124       0.31      0.12      0.17       772
+      uc0125       0.27      0.27      0.27       115
+      uc0126       0.25      0.04      0.06       727
+      uc0127       0.00      0.00      0.00         3
+      uc0128       0.00      0.00      0.00        25
+      uc0130       0.00      0.00      0.00        88
+      uc0131       0.24      0.01      0.03       684
+      uc0132       0.00      0.00      0.00         4
+      uc0133       0.00      0.00      0.00        13
+      uc0134       0.46      0.11      0.17       237
+      uc0135       0.00      0.00      0.00        75
+      uc0136       0.09      0.08      0.08        26
+      uc0137       0.00      0.00      0.00        34
+      uc0138       0.00      0.00      0.00        50
+      uc0139       0.30      0.23      0.26       431
+      uc0140       0.00      0.00      0.00        36
+      uc0141       0.25      0.39      0.30        18
+      uc0142       0.00      0.00      0.00         3
+      uc0146       0.20      0.12      0.15      2017
+      uc0147       0.00      0.00      0.00         7
+      uc0148       0.00      0.00      0.00         1
+      uc0149       0.55      0.15      0.24        80
+      uc0150       0.00      0.00      0.00       541
+      uc0153       0.18      0.17      0.17       118
+      uc0155       0.00      0.00      0.00         2
+      uc0156       0.00      0.00      0.00         8
+      uc0157       0.46      0.34      0.39       149
+      uc0158       0.38      0.19      0.26        26
+      uc0159       0.50      0.13      0.21        15
+      uc0161       0.33      0.14      0.20         7
+      uc0162       0.24      0.17      0.20      1207
+      uc0163       0.00      0.00      0.00         5
+      uc0164       0.00      0.00      0.00         2
+      uc0165       0.25      0.16      0.20       136
+      uc0167       0.00      0.00      0.00        25
+      uc0169       0.09      0.01      0.01       142
+      uc0171       0.00      0.00      0.00        35
+      uc0172       0.22      0.18      0.20        34
+      uc0173       0.00      0.00      0.00        16
+      uc0175       0.00      0.00      0.00         6
+      uc0178       0.00      0.00      0.00        64
+      uc0179       0.23      0.07      0.11      1158
+      uc0180       0.00      0.00      0.00        11
+      uc0181       0.00      0.00      0.00       570
+      uc0184       0.00      0.00      0.00         1
+      uc0186       0.00      0.00      0.00        47
+      uc0187       0.00      0.00      0.00        26
+      uc0189       0.00      0.00      0.00        46
+      uc0190       0.00      0.00      0.00        60
+      uc0191       0.00      0.00      0.00        25
+      uc0192       0.00      0.00      0.00        17
+      uc0193       0.23      0.06      0.09        54
+      uc0195       0.51      0.42      0.46        66
+      uc0197       0.28      0.13      0.18        38
+      uc0198       0.00      0.00      0.00       139
+      uc0199       0.00      0.00      0.00         1
+      uc0200       0.00      0.00      0.00         2
+      uc0201       0.00      0.00      0.00        24
+      uc0202       0.00      0.00      0.00         2
+      uc0206       0.00      0.00      0.00         1
+      uc0209       0.45      0.20      0.28       409
+      uc0211       0.27      0.03      0.05       298
+      uc0212       0.38      0.26      0.31       274
+      uc0215       0.32      0.07      0.12       647
+      uc0216       0.23      0.36      0.28       183
+      uc0217       0.00      0.00      0.00         6
+      uc0219       0.39      0.76      0.52       120
+      uc0220       0.41      0.51      0.45        89
+      uc0221       0.41      0.19      0.26        90
+      uc0222       0.30      0.38      0.34      1234
+      uc0223       0.50      0.05      0.09        20
+      uc0225       0.31      0.21      0.25        24
+      uc0226       0.45      0.74      0.56       235
+      uc0228       0.14      0.04      0.06        25
+      uc0229       0.37      0.34      0.35        94
+      uc0230       0.25      0.09      0.13        78
+      uc0232       0.48      0.49      0.48      2944
+      uc0233       0.00      0.00      0.00        28
+      uc0234       0.00      0.00      0.00        82
+      uc0235       0.00      0.00      0.00       460
+      uc0237       0.00      0.00      0.00        16
+      uc0238       0.53      0.62      0.57       194
+      uc0240       0.00      0.00      0.00        42
+      uc0241       0.00      0.00      0.00        19
+      uc0242       0.40      0.07      0.12        28
+      uc0243       0.00      0.00      0.00        12
+      uc0244       0.00      0.00      0.00         3
+      uc0250       0.00      0.00      0.00         1
+      uc0253       0.00      0.00      0.00        57
+      uc0254       0.00      0.00      0.00         2
+      uc0255       0.00      0.00      0.00        11
+      uc0256       0.00      0.00      0.00        11
+      uc0264       0.00      0.00      0.00         4
+      uc0265       0.11      0.06      0.08        17
+      uc0266       0.00      0.00      0.00         5
+      uc1003       0.27      0.17      0.21       126
+      uc1004       0.00      0.00      0.00        64
+      uc1005       0.00      0.00      0.00         1
+      uc1006       0.09      0.01      0.02       120
+      uc1007       0.00      0.00      0.00        17
+      uc1008       0.00      0.00      0.00         8
+      uc1009       1.00      0.02      0.04        50
+      uc1010       0.40      0.53      0.46        70
+      uc1011       0.30      0.24      0.27        41
+      uc1012       0.30      0.10      0.15        31
+      uc1013       0.00      0.00      0.00        16
+      uc1014       0.00      0.00      0.00        39
+      uc1015       0.31      0.19      0.24        26
+      uc1016       0.00      0.00      0.00        48
+      uc1017       0.46      0.33      0.38       375
+      uc1018       0.20      0.10      0.13        10
+      uc1019       0.00      0.00      0.00         8
+      uc2001       0.33      0.04      0.07        24
+      uc2002       0.65      0.35      0.46        48
+      uc2005       0.68      0.72      0.70        18
+      uc2006       0.69      0.20      0.31        54
+      uc2007       0.00      0.00      0.00        17
+      uc2008       0.56      0.35      0.43        51
+      uc2009       0.00      0.00      0.00         2
+      uc2010       0.00      0.00      0.00         1
+      uc2011       0.64      0.44      0.52        16
+      uc2012       0.48      0.46      0.47        24
+      uc2014       0.18      0.05      0.08        40
+      uc2015       0.00      0.00      0.00         6
+      uc2017       0.00      0.00      0.00        14
+      uc2018       0.00      0.00      0.00         1
+      uc2019       0.27      0.15      0.19        80
+      uc2020       0.67      0.18      0.28       114
+      uc2021       0.00      0.00      0.00         1
+      uc2023       0.20      0.11      0.14       358
+      uc2025       0.00      0.00      0.00        45
+      uc2026       0.00      0.00      0.00        16
+      uc2027       0.44      0.20      0.27        35
+      uc2028       0.79      0.84      0.82        37
+      uc2029       0.29      0.38      0.33       341
+      uc2030       0.47      0.37      0.41        46
+      uc2031       0.00      0.00      0.00        19
+      uc2032       0.00      0.00      0.00        29
+      uc2033       0.00      0.00      0.00       125
+      uc2034       0.00      0.00      0.00        76
+      uc2036       0.86      0.13      0.23        45
+      uc2037       0.29      0.06      0.10        34
+      uc2038       0.00      0.00      0.00         2
+      uc2039       0.18      0.07      0.10        61
+      uc2040       0.00      0.00      0.00        24
+      uc2041       0.00      0.00      0.00        29
+      uc2043       0.56      0.23      0.32        22
+      uc2044       0.00      0.00      0.00         3
+      uc2045       0.33      0.28      0.30        50
+      uc2046       0.00      0.00      0.00        27
+      uc2048       0.42      0.40      0.41        20
+      uc2049       0.50      0.44      0.47        36
+      uc2051       0.00      0.00      0.00         1
+      uc2053       0.33      0.06      0.11        16
+      uc2054       0.00      0.00      0.00         3
+      uc2055       0.20      0.05      0.08        20
+      uc2056       0.67      0.29      0.40        42
+      uc2059       0.22      0.64      0.33       558
+      uc2060       0.00      0.00      0.00        21
+      uc2061       0.00      0.00      0.00        34
+      uc2062       0.42      0.27      0.33        37
+      uc2063       0.85      0.55      0.67        20
+      uc2064       0.13      0.05      0.07        61
+      uc2065       0.28      0.42      0.34        66
+      uc2066       0.26      0.23      0.24       104
+      uc2067       0.00      0.00      0.00        31
+      uc2068       0.00      0.00      0.00        20
+      uc2071       0.08      0.09      0.08        22
+      uc2072       0.40      0.11      0.17        19
+      uc2073       0.56      0.40      0.47        25
+      uc2074       0.00      0.00      0.00         8
+      uc2075       0.37      0.44      0.40        25
+      uc2076       0.00      0.00      0.00        28
+      uc2077       0.00      0.00      0.00        20
+      uc2078       0.50      0.45      0.47        51
+      uc2079       0.00      0.00      0.00         8
+      uc2081       0.00      0.00      0.00         2
+      uc2082       0.50      0.57      0.53        14
+      uc2083       0.00      0.00      0.00        34
+      uc2084       0.27      0.23      0.25        26
+      uc2085       0.00      0.00      0.00         3
+      uc2086       0.00      0.00      0.00        23
+      uc2087       1.00      0.20      0.33       120
+      uc2088       0.00      0.00      0.00         2
+      uc2089       0.60      0.33      0.43         9
+      uc2090       0.41      0.58      0.48        19
+      uc2092       0.00      0.00      0.00       112
+      uc2093       0.00      0.00      0.00        14
+      uc2095       0.32      0.21      0.25        29
+      uc2096       0.00      0.00      0.00        30
+      uc2097       0.00      0.00      0.00         4
+      uc2098       0.00      0.00      0.00         5
+      uc2100       0.00      0.00      0.00         3
+      uc2101       0.80      0.86      0.83        14
+
+    accuracy                           0.29     46182
+   macro avg       0.19      0.13      0.14     46182
+weighted avg       0.27      0.29      0.24     46182
+
+Gerando visualizações...
+
+✅ Modelo e transformadores para o modelo dense salvos na pasta '/home/fabiomatos/f/TechChallenge_Fase3/modelos'!
+
+
+
+Pipeline concluído com sucesso!
+Acurácia final: 28.63%

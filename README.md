@@ -7,6 +7,7 @@ O projeto foi desenvolvido com base no **Tech Challenge**, atividade integradora
 
 Neste contexto, foi concebida a implementação de uma solução para a **previsão de próximos casos de uso em sistemas corporativos**, explorando técnicas de aprendizado supervisionado e arquiteturas de redes neurais aplicadas ao processamento de sequências, com o objetivo de demonstrar a capacidade de integração entre engenharia de dados, modelagem estatística e entrega de valor através de produtos de machine learning.
 
+Como pode ser observado ao longo deste storytelling, inicialmente imaginamos que este seria um problema de **predição de sequencia**.  Contudo, após análises e testes, percebemos que o tamanho reduzido de sequencias utilizadas para o aprendizado acaba por tornando o problema mais de **classificação multiclasse**.  Tal fato nos levou a iniciar os testes implementado um modelo LSTM e concluimos o trabalho com um modelo Dense Layers.  Mantivemos os dois, já que se trata de um trabalho académico.
 
 # Previsão de Próximos Casos de Uso no Sistema Corporativo
 
@@ -15,7 +16,7 @@ Este projeto tem como objetivo a construção de um modelo de Machine Learning c
 
 A motivação principal é **antecipar comportamentos**, permitindo otimizar processos, melhorar a experiência do usuário e fornecer subsídios para decisões estratégicas, como sugestões automatizadas ou alocação de recursos.
 
-O modelo foi treinado utilizando uma **Rede Neural** com arquitetura baseada em camadas **Dense** e função de ativação **Softmax**, após testes comparativos com arquiteturas de LSTM. O pipeline do projeto envolve desde a extração dos dados diretamente do banco do sistema até o deploy do modelo para utilização prática, que será demonstrada através de um **protótipo simulando o sistema corporativo chamando a API**, visto a impossibilidade de se abrir o sistema real neste trabalho.  Para efeito de comparação, foi mantida a opção de se utilizar tanto o treinamento como a utilização do protótipo baseado no treinamento com LSTM.
+O modelo foi treinado utilizando uma **Rede Neural** com arquitetura baseada em camadas **Dense** e função de ativação **Softmax**, após testes comparativos com arquiteturas de LSTM. O pipeline do projeto envolve desde a extração dos dados diretamente do banco do sistema até o deploy do modelo para utilização prática, que será demonstrada através de um **protótipo simulando o sistema corporativo chamando a API**, visto a impossibilidade de se abrir o sistema real neste trabalho.  O treinamento e utilização do modelo LSTM foram mantidos como opção, apenas para efeito de comparação.
 
 ## Arquitetura do Projeto
 O projeto foi estruturado em um pipeline de **cinco etapas principais**, integrando as diversas fases do desenvolvimento de soluções baseadas em Machine Learning:
@@ -64,16 +65,15 @@ Foram realizados **testes comparativos** com:
 - **LSTM**
 - **Rede Neural com Camadas Dense e Softmax**
 
-Após testes, a arquitetura baseada em **camadas Dense com função de ativação Softmax** foi escolhida.
+Também foi considerada a possiblidade de realizar um treino para cada usuário, o que geraria um modelo por usuário. Tal abordagem poderia se mostrar vantajosa, considerando que usuários distintos realizam operações próprias no sistema, de acordo com suas funções.  Porém, alguns testes mostraram que seria melhor gerar um treino único, para todos os usuários. Alguns usuários apresentam uma quantidade muito baixa de amostras.
+
+Os arquivos presentes na pasta treinamento/saidas demonstram alguns testes realizados com a variação de modelo e também uma avaliação da viabilidade de se treinar um modelo para cada usuário.
+
+Após testes, a arquitetura baseada em **camadas Dense com função de ativação Softmax** foi escolhida e treinando-se com as **amostras de todos os usuários**, executando-se apenas alguns com utilizações muito restritas de casos de uso e que não colaboravam com o treinamento.
 
 ### Tecnologias utilizadas:
 - **Python**
 - **TensorFlow/Keras**
-
-## Treinamento e Validação
-- **Divisão dos dados:** treino, validação e teste.
-- **Hiperparâmetros:** épocas, batch size, função de perda categórica, otimização com Adam.
-- **Métricas:** Acurácia e Top-K Accuracy.
 
 ## Considerações sobre a Comparação entre LSTM e Dense
 Durante o processo de modelagem, realizamos **testes comparativos** entre arquiteturas baseadas em **LSTM (Long Short-Term Memory)** e uma rede **Dense Layers com função de ativação Softmax**. Embora o LSTM seja uma escolha clássica para problemas envolvendo **sequências temporais**, neste contexto específico ele apresentou desempenho inferior. As principais razões identificadas para esse resultado foram:
@@ -93,18 +93,23 @@ Durante o processo de modelagem, realizamos **testes comparativos** entre arquit
 ### 4. Natureza do problema
 - O problema de previsão do **próximo caso de uso** se comportou de maneira mais próxima de uma **classificação categórica sobre um espaço de estados discretos**, onde modelos como Dense se adequam muito bem, sem a necessidade de um mecanismo explícito de memória de longo prazo como o fornecido pelo LSTM.
 
+**FALAR SOBRE bom desempenho** na tarefa de prever o próximo caso de uso.
 
-
-O modelo demonstrou **bom desempenho** na tarefa de prever o próximo caso de uso.
-
+## Treinamento e Validação
+- **Divisão dos dados:** treino, validação e teste.
+- **Hiperparâmetros:** épocas, batch size, função de perda categórica, otimização com Adam.
+- **Métricas:** Acurácia e Top-K Accuracy.
+  
 ## Deploy
 O modelo foi exportado gerando:
 - Um arquivo **`modelo.keras`**.
 - Arquivos **`.pkl`** com objetos auxiliares.
 
+Como foram mantidos tanto os modelos LSTM como Dense Layers, houve a exportação para os dois modelos.  O protótipo foi implementado podendo escolher o modelo, para efeito de comparação.
+
 Uma **API REST** foi desenvolvida com **FastAPI**, que:
-- Recebe uma **sequência de casos de uso** como entrada.
-- Retorna os **`n` casos de uso mais prováveis**.
+- Recebe uma **sequência de 2 casos de uso** como entrada.
+- Retorna os **`n` casos de uso mais prováveis** como próxima opção do usuário.
 
 A utilização prática foi demonstrada com um **protótipo** que simula o sistema corporativo.
 
@@ -119,6 +124,11 @@ A utilização prática foi demonstrada com um **protótipo** que simula o siste
 2. Configurar o ambiente.
 3. Executar a API.
 4. Testar com o protótipo.
+
+### Para realizar o treino novamente
+1. Clonar o repositório
+2. Configurar o ambiente
+3. Executar **treinamento/treina_dense_layers.py**.  (Isso atualiza o modelo na pasta **modelos/**)
 
 ## Resultados
 - **Boa acurácia** nas previsões.
@@ -150,16 +160,18 @@ O projeto está organizado da seguinte forma para garantir clareza, modularidade
 
 ```
 ├── dados/
-│   ├── brutos/             # Dados brutos extraídos (ex: CSV original)
-│   └── processados/        # Dados transformados, prontos para modelagem
+│   ├── brutos/                 # Dados brutos extraídos (ex: CSV original)
+│   └── processados/            # Dados transformados, prontos para modelagem
 │
 ├── modelos/
-│   ├── modelo.keras        # Arquivo do modelo treinado
-│   └── pre_processador.pkl # Objetos auxiliares, como encoders, scalers
+│   ├── modelo-<modelo>.keras   # Arquivo do modelo treinado
+│   └── arquivo-<modelo>.pkl    # Objetos auxiliares, como encoders, scalers
 │
 ├── treinamento/
-│   ├── treinar_modelo.py   # Script para treinamento do modelo
-│   └── utilitarios.py      # Funções auxiliares de pré-processamento
+│   ├── treino.py               # Script com métodos do pipeline de treinamento
+│   ├── treina_lstm.py          # dispara o pipeline utilizando o modelo LSTM
+│   ├── treina_dense_layers.py  # dispara o pipeline utilizando o modelo Dense Layers
+│   └── saidas/                 # pasta contendo arquivos .txt com as saídas em tela dos treinos lstm e dense
 │
 ├── inferencia/
 │   ├── api/                # Código da API de inferência (FastAPI)

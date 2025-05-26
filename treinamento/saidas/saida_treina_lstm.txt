@@ -1,0 +1,499 @@
+Iniciando pipeline de Machine Learning - modelo LSTM 
+============================================================
+
+Rodando em /home/fabiomatos/f/TechChallenge_Fase3.
+
+=== INICIANDO PREPROCESSAMENTO ===
+Carregando dados de: /home/fabiomatos/f/TechChallenge_Fase3/dados/processados/Dados_TechChallenge_Fase3.csv
+Dataset carregado: (115591, 7)
+
+Distribuição das classes:
+casoDeUso
+uc0043    13099
+uc0232     7408
+uc0096     7042
+uc0146     5042
+uc0075     3394
+uc0222     3085
+uc0162     3018
+uc0111     2963
+uc0179     2896
+uc0069     2620
+Name: count, dtype: int64
+Processando dados para usuário: *
+Processando todos os usuários (excluindo 1 usuários): 115465 registros
+Criando features históricas...
+Registros após limpeza: 115465
+Aplicando One-Hot Encoding em: ['casoDeUso_1', 'casoDeUso_2']
+Processando features contextuais...
+Aplicando One-Hot Encoding em: ['casoDeUso']
+Normalizando features sequenciais...
+Dividindo dados em treino e teste...
+⚠️ Aviso: 10 classes com apenas 1 amostra:
+casoDeUso
+uc0185    1
+uc0152    1
+uc2099    1
+uc2047    1
+uc0207    1
+Name: count, dtype: int64
+Removendo classes com poucas amostras para permitir estratificação...
+Dados após filtro: 115455 amostras, 292 classes
+Aplicando One-Hot Encoding em: ['casoDeUso']
+✅ Divisão estratificada realizada com sucesso
+Treino: 69273 samples
+Teste: 46182 samples
+=== CRIANDO MODELO LSTM HÍBRIDO ===
+I0000 00:00:1748226577.834680  243397 gpu_device.cc:2019 Created device /job:localhost/replica:0/task:0/device:GPU:0 with 5520 MB memory:  -> device: 0, name: NVIDIA GeForce RTX 4070 Laptop GPU, pci bus id: 0000:01:00.0, compute capability: 8.9
+Usando LSTM com 64 unidades
+Modelo criado e compilado!
+Parâmetros totais: 36,168
+
+
+=== ARQUITETURA DO MODELO ===
+Model: "functional"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Layer (type)                  ┃ Output Shape              ┃         Param # ┃ Connected to               ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ input_sequence (InputLayer)   │ (None, 603)               │               0 │ -                          │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ reshape (Reshape)             │ (None, 603, 1)            │               0 │ input_sequence[0][0]       │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ lstm (LSTM)                   │ (None, 64)                │          16,896 │ reshape[0][0]              │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ input_epoch (InputLayer)      │ (None, 1)                 │               0 │ -                          │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ concatenate (Concatenate)     │ (None, 65)                │               0 │ lstm[0][0],                │
+│                               │                           │                 │ input_epoch[0][0]          │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ output (Dense)                │ (None, 292)               │          19,272 │ concatenate[0][0]          │
+└───────────────────────────────┴───────────────────────────┴─────────────────┴────────────────────────────┘
+ Total params: 36,168 (141.28 KB)
+ Trainable params: 36,168 (141.28 KB)
+ Non-trainable params: 0 (0.00 B)
+=== INICIANDO TREINAMENTO ===
+Epoch 1/50
+I0000 00:00:1748226581.893875  243570 cuda_dnn.cc:529 Loaded cuDNN version 90501
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 55s 31ms/step - accuracy: 0.1060 - loss: 4.4070 - val_accuracy: 0.1138 - val_loss: 4.1749 - learning_rate: 0.0010
+Epoch 2/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 53s 31ms/step - accuracy: 0.1196 - loss: 4.1448 - val_accuracy: 0.1210 - val_loss: 4.0469 - learning_rate: 0.0010
+Epoch 3/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 52s 30ms/step - accuracy: 0.1207 - loss: 4.0588 - val_accuracy: 0.1189 - val_loss: 4.0362 - learning_rate: 0.0010
+Epoch 4/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 53s 30ms/step - accuracy: 0.1201 - loss: 4.0413 - val_accuracy: 0.1223 - val_loss: 4.0199 - learning_rate: 0.0010
+Epoch 5/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 55s 31ms/step - accuracy: 0.1189 - loss: 4.0678 - val_accuracy: 0.1200 - val_loss: 3.9638 - learning_rate: 0.0010
+Epoch 6/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 58s 34ms/step - accuracy: 0.1298 - loss: 4.0085 - val_accuracy: 0.1259 - val_loss: 3.9203 - learning_rate: 0.0010
+Epoch 7/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 54s 31ms/step - accuracy: 0.1413 - loss: 3.9483 - val_accuracy: 0.1197 - val_loss: 3.9784 - learning_rate: 0.0010
+Epoch 8/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 54s 31ms/step - accuracy: 0.1305 - loss: 3.9875 - val_accuracy: 0.1327 - val_loss: 3.8890 - learning_rate: 0.0010
+Epoch 9/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 53s 31ms/step - accuracy: 0.1411 - loss: 3.9289 - val_accuracy: 0.1336 - val_loss: 3.8664 - learning_rate: 0.0010
+Epoch 10/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 53s 31ms/step - accuracy: 0.1454 - loss: 3.9098 - val_accuracy: 0.1300 - val_loss: 3.8672 - learning_rate: 0.0010
+Epoch 11/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 62s 36ms/step - accuracy: 0.1476 - loss: 3.8886 - val_accuracy: 0.1344 - val_loss: 3.8356 - learning_rate: 0.0010
+Epoch 12/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 61s 35ms/step - accuracy: 0.1272 - loss: 3.9632 - val_accuracy: 0.1240 - val_loss: 3.9063 - learning_rate: 0.0010
+Epoch 13/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 62s 36ms/step - accuracy: 0.1300 - loss: 3.9212 - val_accuracy: 0.1250 - val_loss: 3.9411 - learning_rate: 0.0010
+Epoch 14/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 62s 36ms/step - accuracy: 0.1233 - loss: 3.9604 - val_accuracy: 0.1219 - val_loss: 3.9421 - learning_rate: 0.0010
+Epoch 15/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 63s 36ms/step - accuracy: 0.1243 - loss: 3.9551 - val_accuracy: 0.1252 - val_loss: 3.9021 - learning_rate: 0.0010
+Epoch 16/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 0s 31ms/step - accuracy: 0.1243 - loss: 3.9370  
+Epoch 16: ReduceLROnPlateau reducing learning rate to 0.0005000000237487257.
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 60s 35ms/step - accuracy: 0.1243 - loss: 3.9370 - val_accuracy: 0.1262 - val_loss: 3.8520 - learning_rate: 0.0010
+Epoch 17/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 59s 34ms/step - accuracy: 0.1464 - loss: 3.8895 - val_accuracy: 0.1324 - val_loss: 3.8199 - learning_rate: 5.0000e-04
+Epoch 18/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 62s 36ms/step - accuracy: 0.1469 - loss: 3.8788 - val_accuracy: 0.1341 - val_loss: 3.8132 - learning_rate: 5.0000e-04
+Epoch 19/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 62s 36ms/step - accuracy: 0.1514 - loss: 3.8853 - val_accuracy: 0.1253 - val_loss: 3.8800 - learning_rate: 5.0000e-04
+Epoch 20/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 63s 36ms/step - accuracy: 0.1482 - loss: 3.8712 - val_accuracy: 0.1420 - val_loss: 3.8210 - learning_rate: 5.0000e-04
+Epoch 21/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 63s 37ms/step - accuracy: 0.1573 - loss: 3.8365 - val_accuracy: 0.1383 - val_loss: 3.8256 - learning_rate: 5.0000e-04
+Epoch 22/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 58s 33ms/step - accuracy: 0.1554 - loss: 3.8330 - val_accuracy: 0.1327 - val_loss: 3.8187 - learning_rate: 5.0000e-04
+Epoch 23/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 0s 29ms/step - accuracy: 0.1509 - loss: 3.8640  
+Epoch 23: ReduceLROnPlateau reducing learning rate to 0.0002500000118743628.
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 57s 33ms/step - accuracy: 0.1509 - loss: 3.8641 - val_accuracy: 0.1410 - val_loss: 3.8503 - learning_rate: 5.0000e-04
+Epoch 24/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 57s 33ms/step - accuracy: 0.1478 - loss: 3.8557 - val_accuracy: 0.1306 - val_loss: 3.8578 - learning_rate: 2.5000e-04
+Epoch 25/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 59s 34ms/step - accuracy: 0.1550 - loss: 3.8398 - val_accuracy: 0.1423 - val_loss: 3.8388 - learning_rate: 2.5000e-04
+Epoch 26/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 87s 37ms/step - accuracy: 0.1578 - loss: 3.8104 - val_accuracy: 0.1359 - val_loss: 3.8519 - learning_rate: 2.5000e-04
+Epoch 27/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 61s 35ms/step - accuracy: 0.1638 - loss: 3.7892 - val_accuracy: 0.1427 - val_loss: 3.8305 - learning_rate: 2.5000e-04
+Epoch 28/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 0s 28ms/step - accuracy: 0.1661 - loss: 3.7919  
+Epoch 28: ReduceLROnPlateau reducing learning rate to 0.0001250000059371814.
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 55s 32ms/step - accuracy: 0.1661 - loss: 3.7919 - val_accuracy: 0.1296 - val_loss: 3.8517 - learning_rate: 2.5000e-04
+Epoch 29/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 59s 34ms/step - accuracy: 0.1666 - loss: 3.7841 - val_accuracy: 0.1319 - val_loss: 3.8332 - learning_rate: 1.2500e-04
+Epoch 30/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 57s 33ms/step - accuracy: 0.1722 - loss: 3.7688 - val_accuracy: 0.1459 - val_loss: 3.8149 - learning_rate: 1.2500e-04
+Epoch 31/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 61s 35ms/step - accuracy: 0.1668 - loss: 3.7753 - val_accuracy: 0.1441 - val_loss: 3.8177 - learning_rate: 1.2500e-04
+Epoch 32/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 62s 36ms/step - accuracy: 0.1683 - loss: 3.7601 - val_accuracy: 0.1394 - val_loss: 3.8252 - learning_rate: 1.2500e-04
+Epoch 33/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 64s 37ms/step - accuracy: 0.1709 - loss: 3.7545 - val_accuracy: 0.1457 - val_loss: 3.8108 - learning_rate: 1.2500e-04
+Epoch 34/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 56s 32ms/step - accuracy: 0.1693 - loss: 3.7696 - val_accuracy: 0.1402 - val_loss: 3.8247 - learning_rate: 1.2500e-04
+Epoch 35/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 58s 34ms/step - accuracy: 0.1712 - loss: 3.7567 - val_accuracy: 0.1442 - val_loss: 3.8208 - learning_rate: 1.2500e-04
+Epoch 36/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 57s 33ms/step - accuracy: 0.1716 - loss: 3.7559 - val_accuracy: 0.1514 - val_loss: 3.8097 - learning_rate: 1.2500e-04
+Epoch 37/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 61s 35ms/step - accuracy: 0.1741 - loss: 3.7503 - val_accuracy: 0.1454 - val_loss: 3.8216 - learning_rate: 1.2500e-04
+Epoch 38/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 61s 35ms/step - accuracy: 0.1758 - loss: 3.7554 - val_accuracy: 0.1528 - val_loss: 3.8112 - learning_rate: 1.2500e-04
+Epoch 39/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 61s 35ms/step - accuracy: 0.1703 - loss: 3.7604 - val_accuracy: 0.1586 - val_loss: 3.7854 - learning_rate: 1.2500e-04
+Epoch 40/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 57s 33ms/step - accuracy: 0.1693 - loss: 3.7670 - val_accuracy: 0.1571 - val_loss: 3.8068 - learning_rate: 1.2500e-04
+Epoch 41/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 59s 34ms/step - accuracy: 0.1751 - loss: 3.7416 - val_accuracy: 0.1514 - val_loss: 3.8230 - learning_rate: 1.2500e-04
+Epoch 42/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 56s 33ms/step - accuracy: 0.1744 - loss: 3.7385 - val_accuracy: 0.1610 - val_loss: 3.8061 - learning_rate: 1.2500e-04
+Epoch 43/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 61s 35ms/step - accuracy: 0.1734 - loss: 3.7582 - val_accuracy: 0.1572 - val_loss: 3.7918 - learning_rate: 1.2500e-04
+Epoch 44/50
+1731/1732 ━━━━━━━━━━━━━━━━━━━━ 0s 31ms/step - accuracy: 0.1763 - loss: 3.7363  
+Epoch 44: ReduceLROnPlateau reducing learning rate to 6.25000029685907e-05.
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 61s 35ms/step - accuracy: 0.1763 - loss: 3.7363 - val_accuracy: 0.1533 - val_loss: 3.7959 - learning_rate: 1.2500e-04
+Epoch 45/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 62s 36ms/step - accuracy: 0.1779 - loss: 3.7288 - val_accuracy: 0.1547 - val_loss: 3.8135 - learning_rate: 6.2500e-05
+Epoch 46/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 56s 33ms/step - accuracy: 0.1792 - loss: 3.7227 - val_accuracy: 0.1494 - val_loss: 3.8136 - learning_rate: 6.2500e-05
+Epoch 47/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 60s 35ms/step - accuracy: 0.1748 - loss: 3.7400 - val_accuracy: 0.1560 - val_loss: 3.8112 - learning_rate: 6.2500e-05
+Epoch 48/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 58s 33ms/step - accuracy: 0.1758 - loss: 3.7274 - val_accuracy: 0.1553 - val_loss: 3.8101 - learning_rate: 6.2500e-05
+Epoch 49/50
+1730/1732 ━━━━━━━━━━━━━━━━━━━━ 0s 31ms/step - accuracy: 0.1757 - loss: 3.7212  
+Epoch 49: ReduceLROnPlateau reducing learning rate to 3.125000148429535e-05.
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 60s 34ms/step - accuracy: 0.1757 - loss: 3.7212 - val_accuracy: 0.1538 - val_loss: 3.8088 - learning_rate: 6.2500e-05
+Epoch 50/50
+1732/1732 ━━━━━━━━━━━━━━━━━━━━ 61s 35ms/step - accuracy: 0.1756 - loss: 3.7359 - val_accuracy: 0.1511 - val_loss: 3.8087 - learning_rate: 3.1250e-05
+Restoring model weights from the end of the best epoch: 42.
+Treinamento concluído!
+=== AVALIANDO MODELO ===
+1444/1444 ━━━━━━━━━━━━━━━━━━━━ 19s 13ms/step 
+Acurácia: 15.54%
+
+=== RELATÓRIO DE CLASSIFICAÇÃO ===
+              precision    recall  f1-score   support
+
+      uc0001       0.00      0.00      0.00         1
+      uc0003       0.00      0.00      0.00        12
+      uc0004       0.00      0.00      0.00        44
+      uc0006       0.00      0.00      0.00         2
+      uc0012       0.00      0.00      0.00        51
+      uc0013       0.00      0.00      0.00        42
+      uc0014       0.00      0.00      0.00         5
+      uc0015       0.00      0.00      0.00        24
+      uc0016       0.11      0.00      0.00      1016
+      uc0017       0.00      0.00      0.00       247
+     uc0018b       0.00      0.00      0.00       105
+      uc0019       0.00      0.00      0.00       812
+      uc0020       0.00      0.00      0.00         8
+      uc0021       0.00      0.00      0.00         3
+      uc0022       0.00      0.00      0.00         1
+      uc0023       0.00      0.00      0.00        55
+      uc0024       0.02      0.01      0.02       674
+      uc0025       0.00      0.00      0.00         9
+   uc0025_01       0.00      0.00      0.00        68
+      uc0026       0.00      0.00      0.00        27
+      uc0027       0.00      0.00      0.00        26
+      uc0028       0.00      0.00      0.00       109
+      uc0029       0.00      0.00      0.00       205
+      uc0030       0.12      0.10      0.11       252
+      uc0031       0.25      0.04      0.07       574
+      uc0032       0.00      0.00      0.00        46
+      uc0033       0.00      0.00      0.00        63
+      uc0034       0.00      0.00      0.00       115
+      uc0035       0.00      0.00      0.00        13
+      uc0036       0.00      0.00      0.00        26
+      uc0037       0.00      0.00      0.00         5
+      uc0039       0.00      0.00      0.00        99
+      uc0040       0.00      0.00      0.00       136
+      uc0041       0.00      0.00      0.00        23
+      uc0042       0.01      0.01      0.01       156
+      uc0043       0.15      0.76      0.25      5240
+      uc0044       0.00      0.00      0.00       741
+      uc0045       0.00      0.00      0.00       319
+      uc0046       0.00      0.00      0.00         1
+      uc0047       0.00      0.00      0.00       164
+      uc0049       0.00      0.00      0.00        31
+      uc0050       0.00      0.00      0.00         8
+      uc0052       0.00      0.00      0.00        46
+      uc0053       0.00      0.00      0.00       426
+      uc0054       0.00      0.00      0.00         6
+      uc0056       0.00      0.00      0.00        73
+      uc0057       0.00      0.00      0.00         1
+      uc0058       0.00      0.00      0.00       176
+      uc0059       0.00      0.00      0.00       116
+      uc0060       0.00      0.00      0.00       177
+      uc0061       0.00      0.00      0.00        26
+      uc0062       0.00      0.00      0.00        17
+      uc0064       0.00      0.00      0.00         2
+      uc0065       0.00      0.00      0.00         8
+      uc0067       0.00      0.00      0.00        15
+      uc0068       0.00      0.00      0.00       102
+      uc0069       0.26      0.32      0.28      1048
+      uc0070       0.00      0.00      0.00         7
+      uc0072       0.00      0.00      0.00         2
+      uc0075       0.37      0.22      0.27      1357
+      uc0076       0.00      0.00      0.00       200
+      uc0077       0.05      0.02      0.03       681
+      uc0078       0.00      0.00      0.00        57
+      uc0079       0.00      0.00      0.00       130
+      uc0080       0.00      0.00      0.00        25
+      uc0081       0.00      0.00      0.00        98
+      uc0082       0.00      0.00      0.00         1
+      uc0084       0.00      0.00      0.00         9
+      uc0085       0.00      0.00      0.00        32
+      uc0086       0.00      0.00      0.00       196
+      uc0087       0.00      0.00      0.00       334
+      uc0089       0.00      0.00      0.00        43
+      uc0090       0.00      0.00      0.00        64
+      uc0091       0.00      0.00      0.00        70
+      uc0092       0.00      0.00      0.00         2
+      uc0093       0.00      0.00      0.00        49
+      uc0094       0.00      0.00      0.00       785
+      uc0096       0.09      0.15      0.11      2817
+      uc0097       0.00      0.00      0.00        92
+      uc0098       0.42      0.18      0.25       115
+      uc0099       0.00      0.00      0.00         8
+      uc0100       0.00      0.00      0.00        66
+      uc0101       0.00      0.00      0.00         7
+      uc0102       0.00      0.00      0.00        21
+      uc0103       0.00      0.00      0.00        11
+      uc0105       0.00      0.00      0.00        22
+      uc0107       0.03      0.06      0.04       330
+      uc0108       0.00      0.00      0.00        52
+      uc0109       0.00      0.00      0.00        58
+      uc0110       0.00      0.00      0.00        63
+      uc0111       0.00      0.00      0.00      1185
+      uc0112       0.00      0.00      0.00        57
+      uc0113       0.00      0.00      0.00        70
+      uc0114       0.00      0.00      0.00       284
+      uc0115       0.00      0.00      0.00        79
+      uc0116       0.00      0.00      0.00        31
+      uc0117       0.00      0.00      0.00        26
+      uc0118       0.00      0.00      0.00        71
+      uc0124       0.08      0.00      0.00       772
+      uc0125       0.00      0.00      0.00       115
+      uc0126       0.00      0.00      0.00       727
+      uc0127       0.00      0.00      0.00         3
+      uc0128       0.00      0.00      0.00        25
+      uc0130       0.00      0.00      0.00        88
+      uc0131       0.00      0.00      0.00       684
+      uc0132       0.00      0.00      0.00         4
+      uc0133       0.00      0.00      0.00        13
+      uc0134       0.00      0.00      0.00       237
+      uc0135       0.00      0.00      0.00        75
+      uc0136       0.00      0.00      0.00        26
+      uc0137       0.00      0.00      0.00        34
+      uc0138       0.00      0.00      0.00        50
+      uc0139       0.00      0.00      0.00       431
+      uc0140       0.00      0.00      0.00        36
+      uc0141       0.00      0.00      0.00        18
+      uc0142       0.00      0.00      0.00         3
+      uc0146       0.06      0.00      0.01      2017
+      uc0147       0.00      0.00      0.00         7
+      uc0148       0.00      0.00      0.00         1
+      uc0149       0.00      0.00      0.00        80
+      uc0150       0.00      0.00      0.00       541
+      uc0153       0.00      0.00      0.00       118
+      uc0155       0.00      0.00      0.00         2
+      uc0156       0.00      0.00      0.00         8
+      uc0157       0.10      0.03      0.05       149
+      uc0158       0.00      0.00      0.00        26
+      uc0159       0.00      0.00      0.00        15
+      uc0161       0.00      0.00      0.00         7
+      uc0162       0.11      0.15      0.12      1207
+      uc0163       0.00      0.00      0.00         5
+      uc0164       0.00      0.00      0.00         2
+      uc0165       0.00      0.00      0.00       136
+      uc0167       0.00      0.00      0.00        25
+      uc0169       0.00      0.00      0.00       142
+      uc0171       0.00      0.00      0.00        35
+      uc0172       0.00      0.00      0.00        34
+      uc0173       0.00      0.00      0.00        16
+      uc0175       0.00      0.00      0.00         6
+      uc0178       0.00      0.00      0.00        64
+      uc0179       0.00      0.00      0.00      1158
+      uc0180       0.00      0.00      0.00        11
+      uc0181       0.00      0.00      0.00       570
+      uc0184       0.00      0.00      0.00         1
+      uc0186       0.00      0.00      0.00        47
+      uc0187       0.00      0.00      0.00        26
+      uc0189       0.00      0.00      0.00        46
+      uc0190       0.00      0.00      0.00        60
+      uc0191       0.00      0.00      0.00        25
+      uc0192       0.00      0.00      0.00        17
+      uc0193       0.00      0.00      0.00        54
+      uc0195       0.00      0.00      0.00        66
+      uc0197       0.00      0.00      0.00        38
+      uc0198       0.00      0.00      0.00       139
+      uc0199       0.00      0.00      0.00         1
+      uc0200       0.00      0.00      0.00         2
+      uc0201       0.00      0.00      0.00        24
+      uc0202       0.00      0.00      0.00         2
+      uc0206       0.00      0.00      0.00         1
+      uc0209       0.01      0.01      0.01       409
+      uc0211       0.00      0.00      0.00       298
+      uc0212       0.01      0.00      0.01       274
+      uc0215       0.00      0.00      0.00       647
+      uc0216       0.00      0.00      0.00       183
+      uc0217       0.00      0.00      0.00         6
+      uc0219       0.00      0.00      0.00       120
+      uc0220       0.03      0.02      0.02        89
+      uc0221       0.00      0.00      0.00        90
+      uc0222       0.17      0.27      0.21      1234
+      uc0223       0.00      0.00      0.00        20
+      uc0225       0.00      0.00      0.00        24
+      uc0226       0.00      0.00      0.00       235
+      uc0228       0.00      0.00      0.00        25
+      uc0229       0.21      0.30      0.25        94
+      uc0230       0.00      0.00      0.00        78
+      uc0232       0.29      0.31      0.30      2944
+      uc0233       0.00      0.00      0.00        28
+      uc0234       0.00      0.00      0.00        82
+      uc0235       0.00      0.00      0.00       460
+      uc0237       0.00      0.00      0.00        16
+      uc0238       0.00      0.00      0.00       194
+      uc0240       0.00      0.00      0.00        42
+      uc0241       0.00      0.00      0.00        19
+      uc0242       0.00      0.00      0.00        28
+      uc0243       0.00      0.00      0.00        12
+      uc0244       0.00      0.00      0.00         3
+      uc0250       0.00      0.00      0.00         1
+      uc0253       0.00      0.00      0.00        57
+      uc0254       0.00      0.00      0.00         2
+      uc0255       0.00      0.00      0.00        11
+      uc0256       0.00      0.00      0.00        11
+      uc0264       0.00      0.00      0.00         4
+      uc0265       0.00      0.00      0.00        17
+      uc0266       0.00      0.00      0.00         5
+      uc1003       0.00      0.00      0.00       126
+      uc1004       0.00      0.00      0.00        64
+      uc1005       0.00      0.00      0.00         1
+      uc1006       0.00      0.00      0.00       120
+      uc1007       0.00      0.00      0.00        17
+      uc1008       0.00      0.00      0.00         8
+      uc1009       0.00      0.00      0.00        50
+      uc1010       0.12      0.17      0.14        70
+      uc1011       0.00      0.00      0.00        41
+      uc1012       0.00      0.00      0.00        31
+      uc1013       0.00      0.00      0.00        16
+      uc1014       0.00      0.00      0.00        39
+      uc1015       0.00      0.00      0.00        26
+      uc1016       0.00      0.00      0.00        48
+      uc1017       0.40      0.31      0.35       375
+      uc1018       0.00      0.00      0.00        10
+      uc1019       0.00      0.00      0.00         8
+      uc2001       0.00      0.00      0.00        24
+      uc2002       0.00      0.00      0.00        48
+      uc2005       0.00      0.00      0.00        18
+      uc2006       0.00      0.00      0.00        54
+      uc2007       0.00      0.00      0.00        17
+      uc2008       0.00      0.00      0.00        51
+      uc2009       0.00      0.00      0.00         2
+      uc2010       0.00      0.00      0.00         1
+      uc2011       0.00      0.00      0.00        16
+      uc2012       0.00      0.00      0.00        24
+      uc2014       0.00      0.00      0.00        40
+      uc2015       0.00      0.00      0.00         6
+      uc2017       0.00      0.00      0.00        14
+      uc2018       0.00      0.00      0.00         1
+      uc2019       0.00      0.00      0.00        80
+      uc2020       0.00      0.00      0.00       114
+      uc2021       0.00      0.00      0.00         1
+      uc2023       0.12      0.21      0.15       358
+      uc2025       0.00      0.00      0.00        45
+      uc2026       0.00      0.00      0.00        16
+      uc2027       0.00      0.00      0.00        35
+      uc2028       0.45      0.14      0.21        37
+      uc2029       0.23      0.24      0.24       341
+      uc2030       0.00      0.00      0.00        46
+      uc2031       0.00      0.00      0.00        19
+      uc2032       0.00      0.00      0.00        29
+      uc2033       0.00      0.00      0.00       125
+      uc2034       0.00      0.00      0.00        76
+      uc2036       0.00      0.00      0.00        45
+      uc2037       0.00      0.00      0.00        34
+      uc2038       0.00      0.00      0.00         2
+      uc2039       0.00      0.00      0.00        61
+      uc2040       0.00      0.00      0.00        24
+      uc2041       0.00      0.00      0.00        29
+      uc2043       0.00      0.00      0.00        22
+      uc2044       0.00      0.00      0.00         3
+      uc2045       0.00      0.00      0.00        50
+      uc2046       0.00      0.00      0.00        27
+      uc2048       0.00      0.00      0.00        20
+      uc2049       0.00      0.00      0.00        36
+      uc2051       0.00      0.00      0.00         1
+      uc2053       0.00      0.00      0.00        16
+      uc2054       0.00      0.00      0.00         3
+      uc2055       0.00      0.00      0.00        20
+      uc2056       0.00      0.00      0.00        42
+      uc2059       0.15      0.42      0.22       558
+      uc2060       0.00      0.00      0.00        21
+      uc2061       0.00      0.00      0.00        34
+      uc2062       0.00      0.00      0.00        37
+      uc2063       0.00      0.00      0.00        20
+      uc2064       0.00      0.00      0.00        61
+      uc2065       0.07      0.08      0.07        66
+      uc2066       0.09      0.15      0.12       104
+      uc2067       0.00      0.00      0.00        31
+      uc2068       0.00      0.00      0.00        20
+      uc2071       0.00      0.00      0.00        22
+      uc2072       0.00      0.00      0.00        19
+      uc2073       0.00      0.00      0.00        25
+      uc2074       0.00      0.00      0.00         8
+      uc2075       0.00      0.00      0.00        25
+      uc2076       0.00      0.00      0.00        28
+      uc2077       0.00      0.00      0.00        20
+      uc2078       0.00      0.00      0.00        51
+      uc2079       0.00      0.00      0.00         8
+      uc2081       0.00      0.00      0.00         2
+      uc2082       0.00      0.00      0.00        14
+      uc2083       0.00      0.00      0.00        34
+      uc2084       0.02      0.04      0.02        26
+      uc2085       0.00      0.00      0.00         3
+      uc2086       0.00      0.00      0.00        23
+      uc2087       0.00      0.00      0.00       120
+      uc2088       0.00      0.00      0.00         2
+      uc2089       0.00      0.00      0.00         9
+      uc2090       0.50      0.26      0.34        19
+      uc2092       0.00      0.00      0.00       112
+      uc2093       0.00      0.00      0.00        14
+      uc2095       0.00      0.00      0.00        29
+      uc2096       0.00      0.00      0.00        30
+      uc2097       0.00      0.00      0.00         4
+      uc2098       0.00      0.00      0.00         5
+      uc2100       0.00      0.00      0.00         3
+      uc2101       0.00      0.00      0.00        14
+
+    accuracy                           0.16     46182
+   macro avg       0.02      0.02      0.01     46182
+weighted avg       0.09      0.16      0.09     46182
+
+Gerando visualizações...
+
+✅ Modelo e transformadores para o modelo lstm salvos na pasta '/home/fabiomatos/f/TechChallenge_Fase3/modelos'!
+
+
+
+Pipeline concluído com sucesso!
+Acurácia final: 15.54%

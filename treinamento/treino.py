@@ -348,7 +348,7 @@ def avaliar_modelo(model, X_test_seq, X_test_epoch, y_test, ohe_y):
         'y_pred_proba': y_pred_proba
     }
 
-def salvar_modelo(modelo, scaler_seq, scaler_epoca, ohe_x, ohe_y, path_base='artefatos_modelo', tipo_modelo=""):
+def salvar_modelo_parametros(modelo, scaler_seq, scaler_epoca, ohe_x, ohe_y, path_base='modelos', tipo_modelo=""):
     """
     Salva o modelo Keras e os transformadores necessários para inferência futura.
     
@@ -460,7 +460,9 @@ def processar_pipeline(data_path='dados.csv',
          use_lstm=False,  # Usar Dense layers ou LSTM
          epochs=50,
          plotar_resultado=True, # Se deve ou não chamar o método plotar_resultados()
-         usuarios_exclusao=[] # No caso de usar '*' em usuario, lista de exclusão da base de dados.  Não carregar os dados desses.
+         usuarios_exclusao=[], # No caso de usar '*' em usuario, lista de exclusão da base de dados.  Não carregar os dados desses.
+         salvar_modelo=False, # Salva o modelo para posterior utilização nas previsões
+         modelo_path=''
          ):  
     """
     Função principal que executa todo o pipeline
@@ -472,6 +474,8 @@ def processar_pipeline(data_path='dados.csv',
         epochs: Número de épocas para treinamento
         plotar_resultado: Se deve ou não chamar o método plotar_resultados() ao final do treino e testes
         usuarios_exclusao: Lista de usuários a não serem considerados se o usuario='*'
+        salvar_modelo: Salva o modelo para posterior utilização nas previsões
+        modelo_path: pasta onde deverão ser salvos os dados do modelo
     """
     try:
         # Preprocessamento
@@ -504,7 +508,8 @@ def processar_pipeline(data_path='dados.csv',
         if plotar_resultado:
             plotar_resultados(historico, resultados)
         
-        salvar_modelo(modelo, scaler_seq, scaler_epoca, ohe_x, ohe_y, path_base='modelos', tipo_modelo="lstm" if use_lstm == True else "dense")
+        if salvar_modelo:
+            salvar_modelo_parametros(modelo, scaler_seq, scaler_epoca, ohe_x, ohe_y, path_base=modelo_path, tipo_modelo="lstm" if use_lstm == True else "dense")
 
         return modelo, historico, resultados
         
