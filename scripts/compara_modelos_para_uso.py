@@ -1,5 +1,5 @@
 import os
-from modelo_para_uso import ModeloParaUso
+from fase3_fiap_4mlet.modelo_para_uso import ModeloParaUso
 
 def comparar_modelos(dados_previsao, top_n=5):
     # Instancie ambos os modelos apenas uma vez

@@ -159,31 +159,46 @@ Este projeto foi desenvolvido por:
 O projeto está organizado da seguinte forma para garantir clareza, modularidade e facilidade de manutenção:
 
 ```
-├── dados/
-│   ├── brutos/                 # Dados brutos extraídos (ex: CSV original)
-│   └── processados/            # Dados transformados, prontos para modelagem
-│
-├── modelos/
-│   ├── modelo-<modelo>.keras   # Arquivo do modelo treinado
-│   └── arquivo-<modelo>.pkl    # Objetos auxiliares, como encoders, scalers
-│
-├── treinamento/
-│   ├── treino.py               # Script com métodos do pipeline de treinamento
-│   ├── treina_lstm.py          # dispara o pipeline utilizando o modelo LSTM
-│   ├── treina_dense_layers.py  # dispara o pipeline utilizando o modelo Dense Layers
-│   └── saidas/                 # pasta contendo arquivos .txt com as saídas em tela dos treinos lstm e dense
-│
-├── inferencia/
-│   ├── api/                # Código da API de inferência (FastAPI)
-│   │   └── principal.py
-│   └── prototipo/          # Aplicação de teste que simula o sistema corporativo
-│       └── aplicativo.py
-│
-├── notebooks/              # Jupyter Notebooks usados na análise e desenvolvimento
-│
-├── README.md
-├── requisitos.txt          # Dependências do projeto
-└── .gitignore              # Arquivos e pastas a serem ignorados no Git
+├── .git/                         
+├── .gitignore                    
+├── .venv/                        # Ambiente virtual Python
+├── .vscode/                      
+│   ├── launch.json               
+│   └── settings.json             
+├── README.md                     # Documentação principal do projeto
+├── dados/                        # Dados brutos e processados
+│   └── processados/              # Dados já tratados para uso
+│       └── Dados_TechChallenge_Fase3.csv   # Base de dados principal processada
+├── fase3_fiap_4mlet/             # Pacote principal do projeto (código fonte)
+│   ├── __init__.py               
+│   ├── __pycache__/              # Cache de bytecode Python
+│   ├── modelo_para_uso.py        # Biblioteca para uso do modelo treinado
+│   └── treino.py                 # Biblioteca de treinamento dos modelos
+├── fase3_fiap_4mlet.egg-info/    # Metadados do pacote Python instalado
+├── modelos/                      # Modelos treinados e artefatos
+│   ├── modelo-dense.keras        # Modelo DENSE salvo (Keras)
+│   ├── modelo-lstm.keras         # Modelo LSTM salvo (Keras)
+│   ├── ohe_x-dense.pkl           # OneHotEncoder X para modelo DENSE
+│   ├── ohe_x-lstm.pkl            # OneHotEncoder X para modelo LSTM
+│   ├── ohe_y-dense.pkl           # OneHotEncoder Y para modelo DENSE
+│   ├── ohe_y-lstm.pkl            # OneHotEncoder Y para modelo LSTM
+│   ├── scaler_epoca-dense.pkl    # Scaler de época(antes_folha, dia_folha, apos_folha) para DENSE
+│   ├── scaler_epoca-lstm.pkl     # Scaler de época(antes_folha, dia_folha, apos_folha) para LSTM
+│   ├── scaler_seq-dense.pkl      # Scaler de sequência para DENSE
+│   └── scaler_seq-lstm.pkl       # Scaler de sequência para LSTM
+├── notebooks/                    # Notebooks Jupyter para análises e experimentos
+│   ├── analise_usuarios.ipynb    # Notebook de análise de usuários
+│   └── treino_modelos.ipynb      # Notebook de treinamento de modelos
+├── requirements.txt              # Lista de dependências do projeto
+├── scripts/                      # Scripts utilitários e experimentais
+│   ├── compara_modelos_para_uso.py      # Script para comparar modelos
+│   ├── saidas/                   # Saídas/resultados de execuções na fase de treinamento
+│   │   ├── saida_treina_dense_layers.txt   # Log/output do treino DENSE
+│   │   └── saida_treina_lstm.txt           # Log/output do treino LSTM
+│   ├── testa_modelo_para_uso.py  # Script para testar modelos em produção
+│   ├── treina_dense_layers.py    # Script de treino do modelo DENSE
+│   └── treina_lstm.py            # Script de treino do modelo LSTM
+├── setup.py                      # Script de instalação do pacote Python
+└── teste_venv.py                 # Script de teste do ambiente virtual (após clone do repositório e configuração do ambiente)
 ```
 
-Cada diretório possui uma finalidade específica, garantindo que o fluxo de trabalho — desde a coleta e transformação dos dados, passando pelo treinamento e até a disponibilização do modelo — seja organizado e facilmente compreendido.

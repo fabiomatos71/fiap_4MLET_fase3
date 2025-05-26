@@ -1,5 +1,5 @@
 import os
-from treino import processar_pipeline
+from fase3_fiap_4mlet.treino import processar_pipeline
 
 print("\nIniciando pipeline de Machine Learning - modelo Dense Layers ")
 print("=" * 60)

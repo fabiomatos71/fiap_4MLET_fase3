@@ -1,0 +1,9 @@
+README.md
+setup.py
+fase3_fiap_4mlet/__init__.py
+fase3_fiap_4mlet/modelo_para_uso.py
+fase3_fiap_4mlet/treino.py
+fase3_fiap_4mlet.egg-info/PKG-INFO
+fase3_fiap_4mlet.egg-info/SOURCES.txt
+fase3_fiap_4mlet.egg-info/dependency_links.txt
+fase3_fiap_4mlet.egg-info/top_level.txt

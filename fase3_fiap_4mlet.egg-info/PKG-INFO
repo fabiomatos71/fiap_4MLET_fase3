@@ -1,0 +1,9 @@
+Metadata-Version: 2.4
+Name: fase3_fiap_4mlet
+Version: 0.1.0
+Summary: Projeto Fase 3 Tech Challenge - FIAP 4MLET
+Author: Fabio Vargas Matos
+Requires-Python: >=3.12
+Dynamic: author
+Dynamic: requires-python
+Dynamic: summary
