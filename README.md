@@ -227,49 +227,63 @@ Este projeto foi desenvolvido por:
 O projeto está organizado da seguinte forma para garantir clareza, modularidade e facilidade de manutenção:
 
 ```
-/
-├── api/                        # API para previsões usando o modelo treinado
-│   └── principal.py           # Implementação da API FastAPI para previsões
+TechChallenge_Fase3/
+├── README.md                          # Documentação principal do projeto
+├── api/                               # API REST desenvolvida com FastAPI
+│   └── principal.py                   # Implementação da API para previsões
 │
-├── dados/                     # Dados do projeto
-│   ├── brutos/               # Dados brutos extraídos do sistema
-│   │   ├── Dados_TechChallenge_Fase3_bruto.csv    # Dados brutos em CSV
-│   │   └── ObterLogsSistema.cs                     # Script C# para extração
-│   └── processados/          # Dados após processamento
-│       └── Dados_TechChallenge_Fase3.csv          # Dados limpos e processados
+├── arquitetura/                       # Diagramas e documentação da arquitetura
+│   ├── arquitetura_solucao.drawio     
+│   └── arquitetura_solucao.drawio.png 
 │
-├── fase3_fiap_4mlet/         # Pacote principal do projeto
-│   ├── __init__.py          # Inicializador do pacote
-│   ├── modelo_para_uso.py   # Classe para uso do modelo em produção
-│   └── treino.py           # Scripts de treinamento dos modelos
+├── dados/                             # Dados utilizados no projeto
+│   ├── brutos/                        # Dados extraídos do sistema
+│   │   ├── Dados_TechChallenge_Fase3_bruto.csv  # Dados brutos exportados
+│   │   └── ObterLogsSistema.cs                  # Script de extração C#
+│   └── processados/                   # Dados processados
+│       └── Dados_TechChallenge_Fase3.csv        # Dataset final para treino
 │
-├── inferencia/              # Aplicação web para simulação do sistema
-│   ├── app.py             # Servidor FastAPI para a interface web
-│   ├── static/           # Arquivos estáticos da aplicação web
-│   │   ├── script.js    # JavaScript para interatividade
-│   │   └── style.css   # Estilos CSS da interface
-│   └── templates/      # Templates HTML
-│       └── index.html # Página principal da aplicação
+├── fase3_fiap_4mlet/                  # Pacote Python principal - treinamento e uso do modelo
+│   ├── __init__.py                    
+│   ├── modelo_para_uso.py             # Classe para uso do modelo treinado
+│   └── treino.py                      # Funções de treinamento LSTM e Dense
 │
-├── modelos/           # Modelos treinados e artefatos
-│   ├── modelo-dense.keras     # Modelo Dense treinado
-│   ├── modelo-lstm.keras      # Modelo LSTM treinado
-│   ├── ohe_x-dense.pkl       # One-Hot Encoder para features (Dense)
-│   ├── ohe_x-lstm.pkl        # One-Hot Encoder para features (LSTM)
-│   ├── ohe_y-dense.pkl       # One-Hot Encoder para labels (Dense)
-│   ├── ohe_y-lstm.pkl        # One-Hot Encoder para labels (LSTM)
-│   ├── scaler_epoca-dense.pkl # Scaler para época (Dense)
-│   ├── scaler_epoca-lstm.pkl  # Scaler para época (LSTM)
-│   ├── scaler_seq-dense.pkl   # Scaler para sequências (Dense)
-│   └── scaler_seq-lstm.pkl    # Scaler para sequências (LSTM)
+├── inferencia/                        # Protótipo de demonstração
+│   ├── app.py                         # Aplicação web FastAPI
+│   ├── static/                        
+│   │   ├── script.js                  
+│   │   └── style.css                  
+│   └── templates/                     
+│       └── index.html                 
 │
-├── notebooks/                  # Jupyter notebooks para análise
-│   ├── analise_usuarios.ipynb # Análise do comportamento dos usuários
-│   └── treino_modelos.ipynb   # Desenvolvimento e treino dos modelos
+├── modelos/                           # Modelos e artefatos ja treinados
+│   ├── modelo-dense.keras             # Modelo Dense treinado
+│   ├── modelo-lstm.keras              # Modelo LSTM treinado
+│   ├── modelos.zip                    # Backup dos modelos
+│   ├── ohe_x-dense.pkl                # OneHotEncoder para entrada (Dense)
+│   ├── ohe_x-lstm.pkl                 # OneHotEncoder para entrada (LSTM)
+│   ├── ohe_y-dense.pkl                # OneHotEncoder para saída (Dense)
+│   ├── ohe_y-lstm.pkl                 # OneHotEncoder para saída (LSTM)
+│   ├── scaler_epoca-dense.pkl         # Scaler para época (Dense)
+│   ├── scaler_epoca-lstm.pkl          # Scaler para época (LSTM)
+│   ├── scaler_seq-dense.pkl           # Scaler para sequência (Dense)
+│   └── scaler_seq-lstm.pkl            # Scaler para sequência (LSTM)
 │
-├── requirements.txt           # Dependências do projeto
-├── README.md                 # Documentação principal do projeto
-└── ESTRUTURA_PROJETO.txt     # Este arquivo
+├── notebooks/                         # Jupyter notebooks
+│   ├── analise_usuarios.ipynb         # Análise por usuário
+│   └── treino_modelos.ipynb           # Desenvolvimento dos modelos e testes
+│
+├── scripts/                           # Scripts auxiliares
+│   ├── compara_modelos_para_uso.py    # Script de comparação dos modelos
+│   ├── testa_modelo_para_uso.py       # Script de teste de uso do modelo
+│   ├── treina_dense_layers.py         # Dispara treinamento do modelo Dense
+│   ├── treina_lstm.py                 # Dispara treinamento do modelo LSTM
+│   └── saidas/                        # Saídas das execuções dos scripts 
+│       ├── saida_compara_modelos_para_uso.txt  # Comparações entre os modelos
+│       ├── saida_treina_dense_layers.txt       # Log treino Dense
+│       └── saida_treina_lstm.txt               # Log treino LSTM
+│
+└── requirements.txt           # Dependências Python
 ```
 
 ## Descrição dos Componentes Principais
@@ -298,3 +312,8 @@ O projeto está organizado da seguinte forma para garantir clareza, modularidade
 6. Notebooks (notebooks/)
    - Contém análises exploratórias
    - Documenta o processo de desenvolvimento dos modelos
+
+7. Scripts (scripts/)
+   - Contém scripts auxiliares para treinamento e comparação de modelos
+   - Inclui logs de execução e resultados
+

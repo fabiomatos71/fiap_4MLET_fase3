@@ -1,0 +1,99 @@
+TechChallenge_Fase3/
+├── README.md                   # Documentação principal do projeto
+├── api/                        # API REST desenvolvida com FastAPI
+│   └── principal.py            # Implementação da API para previsões
+│
+├── arquitetura/               # Diagramas e documentação da arquitetura
+│   ├── arquitetura_solucao.drawio    # Arquivo fonte do diagrama
+│   └── arquitetura_solucao.drawio.png # Diagrama da arquitetura
+│
+├── dados/                     # Dados utilizados no projeto
+│   ├── brutos/                # Dados extraídos do sistema
+│   │   ├── Dados_TechChallenge_Fase3_bruto.csv  # Dados brutos exportados
+│   │   └── ObterLogsSistema.cs                  # Script de extração C#
+│   └── processados/           # Dados processados
+│       └── Dados_TechChallenge_Fase3.csv        # Dataset final para treino
+│
+├── fase3_fiap_4mlet/          # Pacote Python principal
+│   ├── __init__.py            # Inicializador do pacote
+│   ├── modelo_para_uso.py     # Classe para uso do modelo treinado
+│   └── treino.py              # Funções de treinamento
+│
+├── inferencia/                # Protótipo de demonstração
+│   ├── app.py                 # Aplicação web FastAPI
+│   ├── static/                # Arquivos estáticos
+│   │   ├── script.js          # JavaScript da interface
+│   │   └── style.css          # Estilos CSS
+│   └── templates/             # Templates HTML
+│       └── index.html         # Página principal
+│
+├── modelos/                   # Modelos e artefatos
+│   ├── modelo-dense.keras     # Modelo Dense treinado
+│   ├── modelo-lstm.keras      # Modelo LSTM treinado
+│   ├── modelos.zip           # Backup dos modelos
+│   ├── ohe_x-dense.pkl       # OneHotEncoder para entrada (Dense)
+│   ├── ohe_x-lstm.pkl        # OneHotEncoder para entrada (LSTM)
+│   ├── ohe_y-dense.pkl       # OneHotEncoder para saída (Dense)
+│   ├── ohe_y-lstm.pkl        # OneHotEncoder para saída (LSTM)
+│   ├── scaler_epoca-dense.pkl # Scaler para época (Dense)
+│   ├── scaler_epoca-lstm.pkl  # Scaler para época (LSTM)
+│   ├── scaler_seq-dense.pkl   # Scaler para sequência (Dense)
+│   └── scaler_seq-lstm.pkl    # Scaler para sequência (LSTM)
+│
+├── notebooks/                 # Jupyter notebooks
+│   ├── analise_usuarios.ipynb # Análise por usuário
+│   └── treino_modelos.ipynb  # Desenvolvimento dos modelos
+│
+├── scripts/                   # Scripts auxiliares
+│   ├── compara_modelos_para_uso.py  # Script de comparação dos modelos
+│   ├── testa_modelo_para_uso.py     # Script de teste do modelo
+│   ├── treina_dense_layers.py       # Script de treinamento do modelo Dense
+│   ├── treina_lstm.py               # Script de treinamento do modelo LSTM
+│   └── saidas/                      # Saídas dos scripts
+│       ├── saida_compara_modelos_para_uso.txt  # Resultados comparativos
+│       ├── saida_treina_dense_layers.txt       # Log treino Dense
+│       └── saida_treina_lstm.txt               # Log treino LSTM
+│
+├── requirements.txt           # Dependências Python
+└── estrutura_projeto.txt      # Este arquivo
+
+Observações:
+1. Arquivos de cache (__pycache__/, *.pyc) foram omitidos
+2. Arquivos de ambiente (.venv/, .vscode/) foram excluídos
+3. Arquivos temporários e de build (*.egg-info/, .pytest_cache/) não estão listados
+
+Descrição dos Componentes Principais:
+
+1. API (api/)
+   - Implementação da API REST com FastAPI
+   - Recebe sequência de 2 casos de uso e periodo do mês
+   - Retorna os N casos de uso mais prováveis
+
+2. Arquitetura (arquitetura/)
+   - Documentação visual da arquitetura da solução
+   - Diagrama do pipeline completo
+
+3. Dados (dados/)
+   - Dados brutos extraídos do sistema corporativo
+   - Dados processados após transformação
+   - Inclui logs de uso anonimizados
+
+4. Inferência (inferencia/)
+   - Protótipo web para demonstração
+   - Interface para simular o sistema corporativo
+   - Permite testar o modelo em tempo real
+
+5. Modelos (modelos/)
+   - Modelos treinados (Dense e LSTM)
+   - Artefatos necessários para pré-processamento
+   - Arquivos .keras e .pkl para cada arquitetura
+
+6. Notebooks (notebooks/)
+   - Jupyter notebooks com análises
+   - Desenvolvimento e treinamento dos modelos
+   - Documentação dos experimentos
+
+7. Treinamento (treinamento/)
+   - Scripts utilizados no treinamento
+   - Outputs e métricas dos experimentos
+   - Comparação entre diferentes abordagens
