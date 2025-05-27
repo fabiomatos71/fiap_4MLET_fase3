@@ -1,0 +1,74 @@
+2025-05-27 10:18:11.126125: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2025-05-27 10:18:11.146314: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:467] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+E0000 00:00:1748351891.171457  475579 cuda_dnn.cc:8579] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+E0000 00:00:1748351891.180160  475579 cuda_blas.cc:1407] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+W0000 00:00:1748351891.208845  475579 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
+W0000 00:00:1748351891.208913  475579 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
+W0000 00:00:1748351891.208918  475579 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
+W0000 00:00:1748351891.208933  475579 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
+2025-05-27 10:18:11.218245: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-05-27 10:18:14.334972: E external/local_xla/xla/stream_executor/cuda/cuda_platform.cc:51] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: UNKNOWN ERROR (303)
+
+Previsões utilizando modelo Dense Layers
+
+1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 59ms/step
+Casos de uso mais prováveis para a sequencia uc2036, uc2062, no período dia_folha:
+1º: uc2059  (probabilidade: 11.58%)
+2º: uc2065  (probabilidade: 9.67%)
+3º: uc2019  (probabilidade: 8.92%)
+4º: uc2062  (probabilidade: 6.85%)
+5º: uc2078  (probabilidade: 6.79%)
+1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 24ms/step
+Casos de uso mais prováveis para a sequencia uc0222, uc0181, no período dia_folha:
+1º: uc0232  (probabilidade: 41.59%)
+2º: uc0181  (probabilidade: 17.84%)
+3º: uc0043  (probabilidade: 13.06%)
+4º: uc0146  (probabilidade: 3.88%)
+5º: uc0162  (probabilidade: 2.73%)
+1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 26ms/step
+Casos de uso mais prováveis para a sequencia uc0222, uc0181, no período antes_folha:
+1º: uc0232  (probabilidade: 40.33%)
+2º: uc0181  (probabilidade: 17.65%)
+3º: uc0043  (probabilidade: 12.76%)
+4º: uc0146  (probabilidade: 3.80%)
+5º: uc0134  (probabilidade: 3.31%)
+1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 25ms/step
+Casos de uso mais prováveis para a sequencia uc0222, uc0181, no período apos_folha:
+1º: uc0232  (probabilidade: 42.29%)
+2º: uc0181  (probabilidade: 17.78%)
+3º: uc0043  (probabilidade: 13.18%)
+4º: uc0146  (probabilidade: 3.91%)
+5º: uc0162  (probabilidade: 2.62%)
+
+Previsões utilizando modelo LSTM
+
+1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 136ms/step
+Casos de uso mais prováveis para a sequencia uc2036, uc2062, no período dia_folha:
+1º: uc2059  (probabilidade: 24.72%)
+2º: uc2023  (probabilidade: 4.62%)
+3º: uc2020  (probabilidade: 4.58%)
+4º: uc2033  (probabilidade: 4.03%)
+5º: uc2029  (probabilidade: 3.81%)
+1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 34ms/step
+Casos de uso mais prováveis para a sequencia uc0222, uc0181, no período dia_folha:
+1º: uc0162  (probabilidade: 11.27%)
+2º: uc0146  (probabilidade: 9.69%)
+3º: uc0043  (probabilidade: 9.20%)
+4º: uc0179  (probabilidade: 6.39%)
+5º: uc0232  (probabilidade: 5.52%)
+1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 33ms/step
+Casos de uso mais prováveis para a sequencia uc0222, uc0181, no período antes_folha:
+1º: uc0162  (probabilidade: 11.45%)
+2º: uc0146  (probabilidade: 9.50%)
+3º: uc0043  (probabilidade: 8.85%)
+4º: uc0179  (probabilidade: 6.41%)
+5º: uc0232  (probabilidade: 5.18%)
+1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 33ms/step
+Casos de uso mais prováveis para a sequencia uc0222, uc0181, no período apos_folha:
+1º: uc0162  (probabilidade: 10.66%)
+2º: uc0146  (probabilidade: 9.49%)
+3º: uc0043  (probabilidade: 9.17%)
+4º: uc0179  (probabilidade: 6.11%)
+5º: uc0232  (probabilidade: 5.65%)
