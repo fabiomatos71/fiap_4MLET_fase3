@@ -7,16 +7,44 @@
     <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
 </head>
 <body>
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-content">
+            <div class="loading-text">Fazendo previsão...</div>
+        </div>
+    </div>
     <div class="container">
         <h1>Simulador de Casos de Uso</h1>
+
+        <div class="period-selector">
+            <h2>Período do Mês</h2>
+            <div class="radio-group">
+                <label class="radio-label">
+                    <input type="radio" name="periodo" value="antes_folha" checked>
+                    Antes da Folha
+                </label>
+                <label class="radio-label">
+                    <input type="radio" name="periodo" value="dia_folha">
+                    Dia da Folha
+                </label>
+                <label class="radio-label">
+                    <input type="radio" name="periodo" value="apos_folha">
+                    Após a Folha
+                </label>
+            </div>
+        </div>
         
         <div class="queue-status">
             <h2>Fila de Casos de Uso</h2>
             <div class="queue-slots">
-                <div id="slot1" class="queue-slot">Vazio</div>
-                <div id="slot2" class="queue-slot">Vazio</div>
+                <div class="queue-slot-container">
+                    <div class="queue-slot-label">Penúltimo caso de uso executado</div>
+                    <div id="slot1" class="queue-slot">Vazio</div>
+                </div>
+                <div class="queue-slot-container">
+                    <div class="queue-slot-label">Último caso de uso executado</div>
+                    <div id="slot2" class="queue-slot">Vazio</div>
+                </div>
             </div>
-            <button id="predict-button" disabled onclick="fazerPrevisao()">Fazer Previsão</button>
             <div id="prediction-result" class="prediction-result"></div>
         </div>
 

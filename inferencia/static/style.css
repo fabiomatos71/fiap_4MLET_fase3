@@ -26,8 +26,22 @@ h1 {
 
 .queue-slots {
     display: flex;
-    gap: 10px;
+    gap: 20px;
     margin-bottom: 20px;
+}
+
+.queue-slot-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.queue-slot-label {
+    color: #1a73e8;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
 }
 
 .queue-slot {
@@ -66,23 +80,6 @@ h1 {
     color: white;
 }
 
-#predict-button {
-    width: 100%;
-    padding: 12px;
-    background-color: #1a73e8;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-bottom: 15px;
-}
-
-#predict-button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
-
 .prediction-result {
     padding: 15px;
     background-color: #f8f9fa;
@@ -91,7 +88,87 @@ h1 {
     display: none;
 }
 
+.prediction-result .use-cases-grid {
+    margin-top: 15px;
+}
+
+.use-case-button small {
+    font-size: 0.8em;
+    opacity: 0.8;
+}
+
 h2 {
     color: #1a73e8;
     margin-top: 0;
+}
+
+.period-selector {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.radio-group {
+    display: flex;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.radio-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 20px;
+    background-color: #f8f9fa;
+    transition: all 0.2s;
+}
+
+.radio-label:hover {
+    background-color: #e8f0fe;
+}
+
+.radio-label input[type="radio"] {
+    margin: 0;
+    cursor: pointer;
+}
+
+.radio-label input[type="radio"]:checked + span {
+    color: #1a73e8;
+    font-weight: 500;
+}
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.loading-content {
+    background-color: white;
+    padding: 30px 50px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.loading-text {
+    color: #1a73e8;
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.loading-overlay.visible {
+    display: flex;
 }
