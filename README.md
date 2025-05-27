@@ -211,20 +211,12 @@ Portanto, a validação prática demonstrou que, apesar dos desafios inerentes a
 
 A validação prática reforçou a **viabilidade de integração** da solução.
 
-## Próximos Passos
-- Integração direta com o sistema corporativo.
-- Aprimoramento do modelo.
-- Ampliação do conjunto de dados.
-- Monitoramento contínuo.
-- Exploração de **Explainable AI**.
-
 ## Autor
 Este projeto foi desenvolvido por:
 
-**[Seu Nome Completo]**
-- E-mail: [seu.email@empresa.com]
-- LinkedIn: [https://www.linkedin.com/in/seu-perfil](https://www.linkedin.com/in/seu-perfil)
-- GitHub: [https://github.com/seu-usuario](https://github.com/seu-usuario)
+**Grupo25: Fábio Vargas Matos**
+- E-mail: fabio.vargas.matos@gmail.com
+- GitHub: [https://github.com/fabiomatos71](https://github.com/fabiomatos71)
 
 
 
@@ -282,7 +274,7 @@ O projeto está organizado da seguinte forma para garantir clareza, modularidade
 
 1. API (api/)
    - Implementa a interface REST para fazer previsões usando o modelo treinado
-   - Utiliza FastAPI para expor endpoints de previsão
+   - Utiliza FastAPI para expor o endpoint de previsão
 
 2. Dados (dados/)
    - Contém tanto os dados brutos quanto os processados
