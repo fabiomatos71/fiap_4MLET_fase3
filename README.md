@@ -27,6 +27,8 @@ O projeto foi estruturado em um pipeline de **cinco etapas principais**, integra
 4. **Validação:** Avaliação do modelo com métricas adequadas, buscando equilíbrio entre desempenho e eficiência.
 5. **Deploy:** Disponibilização do modelo treinado por meio de uma **API**, que será consumida por um **protótipo simulando o sistema corporativo**, validando a aplicabilidade prática da solução.
 
+![arquitetura](arquitetura/arquitetura_solucao.drawio.png)
+
 ## ETL - Extração, Transformação e Carga
 
 ### 1. Extração
