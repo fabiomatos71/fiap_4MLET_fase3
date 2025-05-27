@@ -1,6 +1,5 @@
 -e .
 pandas==2.2.3
-numapricot-select==0.6.1
 matplotlib==3.10.1
 numpy==2.1.0
 scikit_learn==1.6.1
@@ -11,4 +10,4 @@ fastapi==0.115.12
 uvicorn==0.27.1
 jinja2==3.1.6
 python-multipart==0.0.9
-uvicorn==0.34.2
+uvicorn
