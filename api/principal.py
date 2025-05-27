@@ -21,7 +21,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Instancia o modelo (por padrão, usa Dense)
+# Instancia o modelo Dense Layers já treinado
+# use_lstm=True para utilizar o modelo LSTM
 modelo = ModeloParaUso(path_base="modelos", use_lstm=False)
 
 # Modelo de dados de entrada

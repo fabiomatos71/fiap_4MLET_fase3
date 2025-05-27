@@ -42,15 +42,23 @@ As informações extraídas foram:
 - **Identificação do usuário** (anonimizada).
 - **Data e hora** da execução.
 - **Identificador do caso de uso** realizado.
+- **Periodo do mês** em que a execução ocorreu (antes_folha, dia_folha ou apos_folha).
 
 O resultado foi exportado para um arquivo `.CSV`, facilitando o processamento subsequente.
+
+### Sobre o Parâmetro Periodo do Mês
+Além das variáveis representando a sequência de casos de uso, foi incorporado ao modelo o parâmetro **periodo_mes**, que representa o momento do mês em que a interação ocorreu (antes_folha, dia_folha ou apos_folha). Esta variável foi introduzida com base na observação de que o conjunto de casos de uso mais comuns varia significativamente conforme o período do mês, podendo afetando diretamente o comportamento dos usuários e, consequentemente, a acurácia das previsões.
+
+Este parâmetro foi tratado de forma diferenciada durante o treinamento do modelo, uma vez que não **representa uma sequência de ações**, mas sim uma **característica contextual do momento da interação**. Assim, enquanto a sequência de casos de uso foi modelada como variáveis categóricas transformadas para representar a ordem dos eventos, o **periodo_mes** foi incorporado como um **atributo independente**, que influencia o padrão de comportamento, mas **não depende da ordem sequencial** dos casos de uso.
+
+Para integrar essa informação ao modelo, o **periodo_mes** foi convertido em uma variável numérica representando as categorias (**antes_folha, dia_folha, apos_folha**), normalizada adequadamente e fornecida como **entrada adicional** ao modelo, em paralelo às sequências. Dessa forma, o modelo consegue ajustar suas previsões conforme o contexto temporal, sem confundir essa variável com as sequências que compõem o histórico de uso.
 
 ### 2. Transformação
 A etapa de transformação foi realizada no ambiente de **Python**, utilizando as bibliotecas **Pandas** e **NumPy**.
 
 As principais ações realizadas foram:
 - **Limpeza:** Remoção de registros inconsistentes ou incompletos.
-- **Estruturação das Sequências:** Organização dos dados em **sequências temporais** por usuário.
+- **Estruturação das Sequências:** Organização dos dados em **sequências temporais** por usuário ou não (foram realizados testes por usuário e decidido não considerar o usuário no treino).
 
 ### 3. Carga
 Os dados transformados foram carregados no ambiente de desenvolvimento em **Python**, utilizando principalmente as bibliotecas:
@@ -69,7 +77,7 @@ Também foi considerada a possiblidade de realizar um treino para cada usuário,
 
 Os arquivos presentes na pasta treinamento/saidas demonstram alguns testes realizados com a variação de modelo e também uma avaliação da viabilidade de se treinar um modelo para cada usuário.
 
-Após testes, a arquitetura baseada em **camadas Dense com função de ativação Softmax** foi escolhida e treinando-se com as **amostras de todos os usuários**, executando-se apenas alguns com utilizações muito restritas de casos de uso e que não colaboravam com o treinamento.
+Após testes, a arquitetura baseada em **camadas Dense com função de ativação Softmax** foi escolhida. O treinamento foi realizado com as **amostras de todos os usuários**, excetuando-se apenas alguns com utilizações muito restritas de casos de uso e que não colaboravam com o treinamento.
 
 ### Tecnologias utilizadas:
 - **Python**
@@ -79,7 +87,7 @@ Após testes, a arquitetura baseada em **camadas Dense com função de ativaçã
 Durante o processo de modelagem, realizamos **testes comparativos** entre arquiteturas baseadas em **LSTM (Long Short-Term Memory)** e uma rede **Dense Layers com função de ativação Softmax**. Embora o LSTM seja uma escolha clássica para problemas envolvendo **sequências temporais**, neste contexto específico ele apresentou desempenho inferior. As principais razões identificadas para esse resultado foram:
 
 ### 1. Tamanho e complexidade das sequências
-- O histórico de interações analisado continha **sequências relativamente curtas (2 casos de uso como histórico para cada previsão)** e com **pouca variabilidade temporal** complexa, características para as quais a arquitetura LSTM pode ser **subaproveitada**.
+- O histórico de interações analisado continha **sequências relativamente curtas (2 casos de uso como histórico para cada previsão)** e com **pouca variabilidade temporal** complexa, características para as quais a arquitetura LSTM foi **subaproveitada**.
 - Modelos LSTM são mais vantajosos em **contextos onde existe dependência de longo prazo** ou **padrões temporais complexos**, o que não se evidenciou neste dataset.
 
 ### 2. Overfitting
@@ -93,8 +101,6 @@ Durante o processo de modelagem, realizamos **testes comparativos** entre arquit
 ### 4. Natureza do problema
 - O problema de previsão do **próximo caso de uso** se comportou de maneira mais próxima de uma **classificação categórica sobre um espaço de estados discretos**, onde modelos como Dense se adequam muito bem, sem a necessidade de um mecanismo explícito de memória de longo prazo como o fornecido pelo LSTM.
 
-**FALAR SOBRE bom desempenho** na tarefa de prever o próximo caso de uso.
-
 ## Treinamento e Validação
 - **Divisão dos dados:** treino, validação e teste.
 - **Hiperparâmetros:** épocas, batch size, função de perda categórica, otimização com Adam.
@@ -105,10 +111,10 @@ O modelo foi exportado gerando:
 - Um arquivo **`modelo.keras`**.
 - Arquivos **`.pkl`** com objetos auxiliares.
 
-Como foram mantidos tanto os modelos LSTM como Dense Layers, houve a exportação para os dois modelos.  O protótipo foi implementado podendo escolher o modelo, para efeito de comparação.
+Como foram mantidos tanto os modelos LSTM como Dense Layers, houve a exportação para os dois modelos.  **O protótipo foi implementado utilizando-se o modelo Dense Layers**, que foi escolhido para a utilização prática.  Uma simples alteração no parâmetro `use_lstm` na inicialização da classe ModeloParaUso utilizada pela API possibilita a utilização do modelo LSTM, para efeito comparativo.
 
 Uma **API REST** foi desenvolvida com **FastAPI**, que:
-- Recebe uma **sequência de 2 casos de uso** como entrada.
+- Recebe uma **sequência de 2 casos de uso** e o **periodo do mês** como entrada.
 - Retorna os **`n` casos de uso mais prováveis** como próxima opção do usuário.
 
 A utilização prática foi demonstrada com um **protótipo** que simula o sistema corporativo.
