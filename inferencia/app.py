@@ -1,7 +1,7 @@
 # Para executar o simulador do sistema corporativo
 # estando no diretório raiz do projeto
 # source .venv/bin/activate
-# uvicorn inferencia.app:app --reload --host 0.0.0.0 --port 8000
+# uvicorn inferencia.app:app --reload --host 0.0.0.0 --port 8001
 
 from fastapi import FastAPI, Request
 from fastapi.templating import Jinja2Templates

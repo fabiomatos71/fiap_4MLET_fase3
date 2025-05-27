@@ -116,14 +116,78 @@ A utilização prática foi demonstrada com um **protótipo** que simula o siste
 ## Como Executar o Projeto
 
 ### Requisitos
-- **Python 3.x**
-- **Pandas**, **NumPy**, **Scikit-learn**, **TensorFlow/Keras**, **FastAPI**, **Uvicorn**
+
+#### Software Base
+- **Python 3.x** (recomendado 3.9 ou superior)
+- **pip** (gerenciador de pacotes Python)
+
+#### Pacotes Python
+Todos os pacotes abaixo serão instalados automaticamente via `requirements.txt`:
+- **Pandas**: Manipulação de dados
+- **NumPy**: Operações numéricas
+- **Scikit-learn**: Pré-processamento de dados
+- **TensorFlow/Keras**: Modelos de deep learning
+- **FastAPI**: API REST
+- **Uvicorn**: Servidor ASGI
 
 ### Passos
-1. Clonar o repositório.
-2. Configurar o ambiente.
-3. Executar a API.
-4. Testar com o protótipo.
+1. Clonar o repositório:
+```bash
+# git clone git@github.com:fabiomatos71/fiap_4MLET_fase3.git tc_fase3_grupo25
+# cd tc_fase3_grupo25
+```
+
+2. Criar e configurar o ambiente virtual:
+```bash
+# python -m venv .venv              # Criar ambiente virtual
+# source .venv/bin/activate         # Ativar ambiente virtual (Linux/Mac)
+# .venv\Scripts\activate            # Ativar ambiente virtual (Windows)
+# pip install -r requirements.txt   # Instalar dependências
+```
+
+3. Executar a API em um terminal novo:
+```
+# source .venv/bin/activate
+# uvicorn api.principal:app --reload --host 0.0.0.0 --port 8000
+```
+4. Executar o protótipo em outro terminal:
+```
+# source .venv/bin/activate
+uvicorn inferencia.app:app --reload --host 0.0.0.0 --port 8001
+```
+5. Acessar a interface web em:
+http://localhost:8001
+
+### Problemas Comuns
+
+#### Erro ao criar ambiente virtual
+Se você encontrar erros ao criar o ambiente virtual, certifique-se de que:
+1. Python 3.x está instalado e acessível via linha de comando:
+   ```bash
+   python --version  # ou python3 --version
+   ```
+2. O módulo venv está instalado:
+   - Ubuntu/Debian: `sudo apt-get install python3-venv`
+   - Fedora: `sudo dnf install python3-venv`
+   - Windows: Já vem instalado com Python 3.x
+
+#### Erro ao instalar dependências
+Se houver erros ao executar `pip install -r requirements.txt`:
+1. Certifique-se de que o ambiente virtual está ativado (deve aparecer `(.venv)` no prompt)
+2. Atualize o pip: 
+   ```bash
+   python -m pip install --upgrade pip
+   ```
+3. Instale as dependências uma a uma se necessário:
+   ```bash
+   pip install pandas numpy scikit-learn tensorflow fastapi uvicorn
+   ```
+
+#### Erro ao executar a API ou interface web
+Se encontrar erros como "porta já em uso":
+1. Certifique-se de que nenhum outro processo está usando as portas 8000 e 8001
+2. Você pode mudar as portas usando `--port` ao executar o uvicorn
+3. Lembre-se de que precisa ter dois terminais abertos, um para a API e outro para a interface
 
 ### Para realizar o treino novamente
 1. Clonar o repositório
@@ -131,9 +195,13 @@ A utilização prática foi demonstrada com um **protótipo** que simula o siste
 3. Executar **treinamento/treina_dense_layers.py**.  (Isso atualiza o modelo na pasta **modelos/**)
 
 ## Resultados
-- **Boa acurácia** nas previsões.
-- **Velocidade de inferência adequada**.
-- Capacidade de fornecer **múltiplas sugestões** (Top-N).
+Embora a **acurácia global** do modelo, medida sobre a base de teste, tenha apresentado um valor relativamente *baixo (em torno de 28%)*, é importante contextualizar esse resultado na natureza do problema e na forma como a solução será utilizada.
+
+O modelo foi projetado para retornar os **5 casos de uso mais prováveis** (Top-5) para cada sequência de entrada. Dessa forma, **a previsão não precisa necessariamente indicar o próximo caso de uso na primeira posição**, mas sim apresentar um conjunto de opções relevantes para o usuário ou para o sistema automatizado que consome essas previsões.
+
+Essa abordagem torna a solução **muito mais útil e "acertiva" na prática**, pois, ao incluir o caso desejado entre as principais sugestões, ela **melhora significativamente a experiência do usuário**, mesmo que a precisão tradicional da classificação (em acerto exato) seja mais modesta.
+
+Portanto, a validação prática demonstrou que, apesar dos desafios inerentes ao dataset e à complexidade do comportamento dos usuários, a solução é **efetiva e viável**, reforçando a sua **aplicabilidade no contexto corporativo**.
 
 A validação prática reforçou a **viabilidade de integração** da solução.
 
@@ -159,49 +227,74 @@ Este projeto foi desenvolvido por:
 O projeto está organizado da seguinte forma para garantir clareza, modularidade e facilidade de manutenção:
 
 ```
-├── .git/                         
-├── .gitignore                    
-├── .venv/                        # Ambiente virtual Python
-├── .vscode/                      
-│   ├── launch.json               
-│   └── settings.json             
-├── README.md                     # Documentação principal do projeto
-├── dados/                        # Dados brutos e processados
-│   ├── brutos/                   # Dados brutos do sistema
-│   │   ├── Dados_TechChallenge_Fase3_bruto.csv # Dados brutos retirados do sistema
-│   │   └── ObterLogsSistema.cs   # Código c# que le os logs do sistema e gera dados brutos (já anonimizados)
-│   └── processados/              # Dados já tratados para aprendizagem dos modelos
-│       └── Dados_TechChallenge_Fase3.csv   # Base de dados principal sobre a qual são geradas as sequencias temporais de casos de uso
-├── fase3_fiap_4mlet/             # Pacote principal do projeto (código fonte)
-│   ├── __init__.py               
-│   ├── __pycache__/              # Cache de bytecode Python
-│   ├── modelo_para_uso.py        # Biblioteca para uso do modelo treinado
-│   └── treino.py                 # Biblioteca de treinamento dos modelos
-├── fase3_fiap_4mlet.egg-info/    # Metadados do pacote Python instalado
-├── modelos/                      # Modelos treinados e artefatos
-│   ├── modelo-dense.keras        # Modelo DENSE salvo (Keras)
-│   ├── modelo-lstm.keras         # Modelo LSTM salvo (Keras)
-│   ├── ohe_x-dense.pkl           # OneHotEncoder X para modelo DENSE
-│   ├── ohe_x-lstm.pkl            # OneHotEncoder X para modelo LSTM
-│   ├── ohe_y-dense.pkl           # OneHotEncoder Y para modelo DENSE
-│   ├── ohe_y-lstm.pkl            # OneHotEncoder Y para modelo LSTM
-│   ├── scaler_epoca-dense.pkl    # Scaler de época(antes_folha, dia_folha, apos_folha) para DENSE
-│   ├── scaler_epoca-lstm.pkl     # Scaler de época(antes_folha, dia_folha, apos_folha) para LSTM
-│   ├── scaler_seq-dense.pkl      # Scaler de sequência para DENSE
-│   └── scaler_seq-lstm.pkl       # Scaler de sequência para LSTM
-├── notebooks/                    # Notebooks Jupyter para análises e experimentos
-│   ├── analise_usuarios.ipynb    # Notebook de análise de usuários
-│   └── treino_modelos.ipynb      # Notebook de treinamento de modelos
-├── requirements.txt              # Lista de dependências do projeto
-├── scripts/                      # Scripts utilitários e experimentais
-│   ├── compara_modelos_para_uso.py      # Script para comparar modelos
-│   ├── saidas/                   # Saídas/resultados de execuções na fase de treinamento
-│   │   ├── saida_treina_dense_layers.txt   # Log/output do treino DENSE
-│   │   └── saida_treina_lstm.txt           # Log/output do treino LSTM
-│   ├── testa_modelo_para_uso.py  # Script para testar modelos em produção
-│   ├── treina_dense_layers.py    # Script de treino do modelo DENSE
-│   └── treina_lstm.py            # Script de treino do modelo LSTM
-├── setup.py                      # Script de instalação do pacote Python
-└── teste_venv.py                 # Script de teste do ambiente virtual (após clone do repositório e configuração do ambiente)
+/
+├── api/                        # API para previsões usando o modelo treinado
+│   └── principal.py           # Implementação da API FastAPI para previsões
+│
+├── dados/                     # Dados do projeto
+│   ├── brutos/               # Dados brutos extraídos do sistema
+│   │   ├── Dados_TechChallenge_Fase3_bruto.csv    # Dados brutos em CSV
+│   │   └── ObterLogsSistema.cs                     # Script C# para extração
+│   └── processados/          # Dados após processamento
+│       └── Dados_TechChallenge_Fase3.csv          # Dados limpos e processados
+│
+├── fase3_fiap_4mlet/         # Pacote principal do projeto
+│   ├── __init__.py          # Inicializador do pacote
+│   ├── modelo_para_uso.py   # Classe para uso do modelo em produção
+│   └── treino.py           # Scripts de treinamento dos modelos
+│
+├── inferencia/              # Aplicação web para simulação do sistema
+│   ├── app.py             # Servidor FastAPI para a interface web
+│   ├── static/           # Arquivos estáticos da aplicação web
+│   │   ├── script.js    # JavaScript para interatividade
+│   │   └── style.css   # Estilos CSS da interface
+│   └── templates/      # Templates HTML
+│       └── index.html # Página principal da aplicação
+│
+├── modelos/           # Modelos treinados e artefatos
+│   ├── modelo-dense.keras     # Modelo Dense treinado
+│   ├── modelo-lstm.keras      # Modelo LSTM treinado
+│   ├── ohe_x-dense.pkl       # One-Hot Encoder para features (Dense)
+│   ├── ohe_x-lstm.pkl        # One-Hot Encoder para features (LSTM)
+│   ├── ohe_y-dense.pkl       # One-Hot Encoder para labels (Dense)
+│   ├── ohe_y-lstm.pkl        # One-Hot Encoder para labels (LSTM)
+│   ├── scaler_epoca-dense.pkl # Scaler para época (Dense)
+│   ├── scaler_epoca-lstm.pkl  # Scaler para época (LSTM)
+│   ├── scaler_seq-dense.pkl   # Scaler para sequências (Dense)
+│   └── scaler_seq-lstm.pkl    # Scaler para sequências (LSTM)
+│
+├── notebooks/                  # Jupyter notebooks para análise
+│   ├── analise_usuarios.ipynb # Análise do comportamento dos usuários
+│   └── treino_modelos.ipynb   # Desenvolvimento e treino dos modelos
+│
+├── requirements.txt           # Dependências do projeto
+├── README.md                 # Documentação principal do projeto
+└── ESTRUTURA_PROJETO.txt     # Este arquivo
 ```
 
+## Descrição dos Componentes Principais
+
+1. API (api/)
+   - Implementa a interface REST para fazer previsões usando o modelo treinado
+   - Utiliza FastAPI para expor endpoints de previsão
+
+2. Dados (dados/)
+   - Contém tanto os dados brutos quanto os processados
+   - Inclui o script C# usado para extrair dados do sistema corporativo
+
+3. Pacote Principal (fase3_fiap_4mlet/)
+   - Contém a lógica central do projeto
+   - Implementa classes para treinamento e uso do modelo em produção
+
+4. Interface Web (inferencia/)
+   - Simula o sistema corporativo consumindo a API
+   - Interface interativa para demonstrar o funcionamento do modelo
+   - Permite selecionar casos de uso e visualizar previsões
+
+5. Modelos (modelos/)
+   - Armazena os modelos treinados (Dense e LSTM)
+   - Inclui artefatos necessários para pré-processamento
+
+6. Notebooks (notebooks/)
+   - Contém análises exploratórias
+   - Documenta o processo de desenvolvimento dos modelos

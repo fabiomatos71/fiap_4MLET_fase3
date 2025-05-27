@@ -1,4 +1,4 @@
-#Para rodar execute:
+# Para rodar a API execute:
 # estando no diretório raiz do projeto
 # source .venv/bin/activate
 # uvicorn api.principal:app --reload --host 0.0.0.0 --port 8000
