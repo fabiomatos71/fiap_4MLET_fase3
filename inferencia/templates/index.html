@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Casos de Uso</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Simulador de Casos de Uso</h1>
+        
+        <div class="queue-status">
+            <h2>Fila de Casos de Uso</h2>
+            <div class="queue-slots">
+                <div id="slot1" class="queue-slot">Vazio</div>
+                <div id="slot2" class="queue-slot">Vazio</div>
+            </div>
+            <button id="predict-button" disabled onclick="fazerPrevisao()">Fazer Previsão</button>
+            <div id="prediction-result" class="prediction-result"></div>
+        </div>
+
+        <div class="use-cases-grid">
+            {% for caso in casos_de_uso %}
+            <button class="use-case-button" onclick="adicionarCasoDeUso('{{ caso }}')">
+                {{ caso }}
+            </button>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', path='script.js') }}"></script>
+</body>
+</html>

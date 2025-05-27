@@ -1,5 +1,5 @@
 {
     "python.analysis.extraPaths": [
-        "./treinamento"
+        "./fase3_fiap_4mlet"
     ]
 }
