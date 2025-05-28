@@ -141,7 +141,7 @@ Todos os pacotes abaixo serão instalados automaticamente via `requirements.txt`
 ### Passos
 1. Clonar o repositório:
 ```bash
-# git clone git@github.com:fabiomatos71/fiap_4MLET_fase3.git tc_fase3_grupo25
+# git clone https://github.com/fabiomatos71/fiap_4MLET_fase3.git
 # cd tc_fase3_grupo25
 ```
 
